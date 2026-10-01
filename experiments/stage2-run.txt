@@ -1,0 +1,17 @@
+Pascal Cofactors Stage-2 independent reproduction
+python=3.13.5
+pairs(p,a)=24
+d_values=3,5,7,9,11,13,15
+parameter_cases=168
+multiplier_rows_q_2_through_Q_plus_1=5943
+kummer_vs_legendre_sanity_cases=12956
+exact_integer_gcd_rows_N_le_10000=225
+exact_integer_gcd_parameter_cases=33
+failures=kummer_legendre:0,corrected_threshold_bounds:0,stage1_lower_bound_true:0,target_A:0,target_B:0,target_C:0,gcd_candidate:0,exact_gcd:0
+observed_pre_coeff_max=a*(d+1)/2 for all d>=5 cases
+observed_pre_coeff_argmax=q=Q uniquely for all d>=5 cases
+observed_pre_gcd_max=a*(d-1)/2+1 for all tested odd d=3..15
+observed_pre_gcd_argmax=q=p,p^2,...,p^a for all tested cases
+stage1_bound_Q^(d-1)<C_d(Q) observed true in 0 cases
+grid_sha256=0b56991f8b019cb0778279c6a5c5bdf7999b60ea4b28b43e366a263cb7b691c0
+exact_sha256=b68a0e5e51e9186b884091b81e906888bcdb00f544181b2cbb2e58e8075ce201
