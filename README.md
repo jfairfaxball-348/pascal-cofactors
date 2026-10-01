@@ -15,7 +15,7 @@ For a prime (p\nmid m), let
 [
 r_p(m)=\min\{r\ge1:m<p^r\}.
 ]
-Once existence of an extremal row has been established, write
+Only after existence of an extremal row has been established, write
 [
 T_p(m)=\min\{N>m:m\mid N, v_p(G(N;m))=r_p(m)\}.
 ]
