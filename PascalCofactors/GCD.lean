@@ -218,6 +218,56 @@ theorem restricted_gcd_valuation_bounded
   rw [restricted_gcd_valuation hp ha hs hq2 hqQ]
   simpa only [isPositivePPower_iff_bounded hp hqQ]
 
+/-- The pre-extremal restricted-GCD valuation never exceeds `a*s+1`. -/
+theorem restricted_gcd_le_max
+    {p a s q : ℕ} (hp : p.Prime) (ha : 1 ≤ a) (hs : 1 ≤ s)
+    (hq2 : 2 ≤ q) (hqQ : q ≤ p ^ a) :
+    padicValNat p (G (C p a s * q) (C p a s)) ≤ a * s + 1 := by
+  rw [restricted_gcd_valuation_bounded hp ha hs hq2 hqQ]
+  split <;> omega
+
+/-- Equality in the pre-extremal maximum occurs exactly at
+`q = p^b` with `1 ≤ b ≤ a`. -/
+theorem restricted_gcd_eq_max_iff
+    {p a s q : ℕ} (hp : p.Prime) (ha : 1 ≤ a) (hs : 1 ≤ s)
+    (hq2 : 2 ≤ q) (hqQ : q ≤ p ^ a) :
+    padicValNat p (G (C p a s * q) (C p a s)) = a * s + 1 ↔
+      ∃ b, 1 ≤ b ∧ b ≤ a ∧ q = p ^ b := by
+  rw [restricted_gcd_valuation_bounded hp ha hs hq2 hqQ]
+  by_cases hpow : ∃ b, 1 ≤ b ∧ b ≤ a ∧ q = p ^ b
+  · simp [hpow]
+  · simp [hpow]
+
+/-- The value `a*s+1` is attained in the pre-extremal window (already at `q=p`). -/
+theorem restricted_gcd_maximum_at_p
+    {p a s : ℕ} (hp : p.Prime) (ha : 1 ≤ a) (hs : 1 ≤ s) :
+    padicValNat p (G (C p a s * p) (C p a s)) = a * s + 1 := by
+  have hpQ : p ≤ p ^ a := by
+    simpa [pow_one] using Nat.pow_le_pow_right hp.pos ha
+  rw [restricted_gcd_valuation_bounded hp ha hs hp.two_le hpQ]
+  have hpow : ∃ b, 1 ≤ b ∧ b ≤ a ∧ p = p ^ b :=
+    ⟨1, by omega, ha, by simp⟩
+  simp [hpow]
+
+/-- Maximum and exact argmax package for `2 ≤ q ≤ p^a`. -/
+theorem restricted_gcd_maximum_and_argmax
+    {p a s : ℕ} (hp : p.Prime) (ha : 1 ≤ a) (hs : 1 ≤ s) :
+    (∀ q, 2 ≤ q → q ≤ p ^ a →
+      padicValNat p (G (C p a s * q) (C p a s)) ≤ a * s + 1) ∧
+    (∃ q, 2 ≤ q ∧ q ≤ p ^ a ∧
+      padicValNat p (G (C p a s * q) (C p a s)) = a * s + 1) ∧
+    (∀ q, 2 ≤ q → q ≤ p ^ a →
+      (padicValNat p (G (C p a s * q) (C p a s)) = a * s + 1 ↔
+        ∃ b, 1 ≤ b ∧ b ≤ a ∧ q = p ^ b)) := by
+  refine ⟨?_, ?_, ?_⟩
+  · intro q hq2 hqQ
+    exact restricted_gcd_le_max hp ha hs hq2 hqQ
+  · have hpQ : p ≤ p ^ a := by
+      simpa [pow_one] using Nat.pow_le_pow_right hp.pos ha
+    exact ⟨p, hp.two_le, hpQ, restricted_gcd_maximum_at_p hp ha hs⟩
+  · intro q hq2 hqQ
+    exact restricted_gcd_eq_max_iff hp ha hs hq2 hqQ
+
 end
 
 end PascalCofactors
