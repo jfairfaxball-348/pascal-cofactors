@@ -32,10 +32,10 @@ Date: **2026-10-02**
   - Working branch: `stage5-lean`.
   - Lean toolchain pinned to `leanprover/lean4:v4.35.0-rc2`.
   - Formal dependency pinned to `jfairfaxball-348/Pascal-Extremes@f3a4335d17e333128b9ec16f8b0b139396e5bd94`; its manifest pins Mathlib to `bd6c1abe5f55b6c3856172d6a23703e0888f5286`.
-  - `PascalCofactors/Basic.lean` compiles in the clean GitHub Actions build.
-  - `PascalCofactors/Threshold.lean` is down to one local Nat-arithmetic proof obligation in the private `exponent_lower_identity`; the mathematical threshold statement has not been weakened.
-  - `PascalCofactors/Digits.lean` is drafted following the Stage-3 digit-block architecture but has not yet been compiler-reached because compilation still stops in `Threshold.lean`.
-  - Coefficient scaling, selected-coefficient maxima, restricted-GCD formulas, sparse endpoint, Target A, and Target C remain to be formalised.
+  - Clean code-bearing checkpoint: `b78321a8af50281f19379b631151c2c934922f17`, GitHub Actions run `36987832194`, job `110776801604`. Dependency resolution, Mathlib cache retrieval, `lake build`, and the zero-`sorry`/`admit` check all succeeded.
+  - `PascalCofactors/Basic.lean`, `Threshold.lean`, `Digits.lean`, `Scaling.lean`, and `GCD.lean` compile cleanly.
+  - The corrected threshold, finite-window digit-sum shift, additive coefficient scaling, selected-coefficient formula and unique maximum, exact pre-extremal restricted-GCD formula, restricted-GCD maximum, and exact argmax set are formalised.
+  - The sparse endpoint, Target A, and Target C remain to be formalised.
   - Stage 5 is not complete; no Stage-6 work has begun.
 - **Stage 6 — Palomar registration: NOT STARTED.**
 - **Stage 7 — research paper: NOT STARTED.**
@@ -48,7 +48,7 @@ Let \(p\) be prime, \(a\ge1\), \(Q=p^a\), \(d=2s+1\ge3\) odd, and
 m=C_d(Q)=\frac{Q^d+1}{Q+1}.
 \]
 
-- **Threshold prerequisite: PROVED INFORMALLY.**
+- **Threshold prerequisite: FORMALISED IN LEAN.**
   \[
   p^{a(d-1)-1}<m<p^{a(d-1)},\qquad p\nmid m,
   \]
@@ -58,7 +58,7 @@ m=C_d(Q)=\frac{Q^d+1}{Q+1}.
   \]
   The false Stage-1 lower bound \(p^{a(d-1)}<m\) remains withdrawn and is not used.
 
-- **Finite-window coefficient scaling: PROVED INFORMALLY; CLEARED FOR STAGE 5.**
+- **Finite-window coefficient scaling: FORMALISED IN LEAN.**
   For
   \[
   2\le q\le Q,\qquad 1\le j<q,
@@ -69,7 +69,7 @@ m=C_d(Q)=\frac{Q^d+1}{Q+1}.
   as+v_p\binom qj.
   \]
 
-- **Project Target B: PROVED INFORMALLY; CLEARED FOR STAGE 5.**
+- **Project Target B: FORMALISED IN LEAN.**
   \[
   v_p\binom{mq}{m}=as+v_p(q),
   \]
@@ -86,7 +86,7 @@ m=C_d(Q)=\frac{Q^d+1}{Q+1}.
   q=Q=p^a.
   \]
 
-- **Restricted-GCD pre-extremal formula: PROVED INFORMALLY; CLEARED FOR STAGE 5.**
+- **Restricted-GCD pre-extremal formula: FORMALISED IN LEAN.**
   For every \(2\le q\le Q\),
   \[
   v_p(G(mq;m))
@@ -108,7 +108,7 @@ m=C_d(Q)=\frac{Q^d+1}{Q+1}.
   \{p,p^2,\ldots,p^a\}.
   \]
 
-- **Sparse endpoint: PROVED INFORMALLY; CLEARED FOR STAGE 5.**
+- **Sparse endpoint: PROVED INFORMALLY; CLEARED FOR STAGE 5; NOT YET FORMALISED.**
   At \(q=Q+1\),
   \[
   m(Q+1)=Q^d+1,
@@ -116,12 +116,12 @@ m=C_d(Q)=\frac{Q^d+1}{Q+1}.
   v_p(G(Q^d+1;m))=a(d-1)=r_p(m).
   \]
 
-- **Project Target A, odd \(d\ge5\): PROVED INFORMALLY; CLEARED FOR STAGE 5.**
+- **Project Target A, odd \(d\ge5\): PROVED INFORMALLY; CLEARED FOR STAGE 5; NOT YET FORMALISED.**
   \[
   T_p(C_d(p^a))=p^{ad}+1.
   \]
 
-- **Project Target C, \(d=3\): PROVED INFORMALLY; CLEARED FOR STAGE 5.**
+- **Project Target C, \(d=3\): PROVED INFORMALLY; CLEARED FOR STAGE 5; NOT YET FORMALISED.**
   \[
   T_p(p^{2a}-p^a+1)=
   \begin{cases}
@@ -177,8 +177,8 @@ These computations remain regression evidence only. None is an infinite proof st
 - Stage 4 establishes a **documented final-statement literature audit**, not historical priority.
 - Stage-2 computation is finite evidence only.
 - Chung--Yang 2026 remains unresolved at theorem level.
-- Lean formalisation has begun and is incomplete. No Palomar, paper, or arXiv work has begun.
+- Lean formalisation is clean through the pre-extremal restricted-GCD maximum/argmax package and remains incomplete at the sparse endpoint. No Palomar, paper, or arXiv work has begun.
 
 ## Next action
 
-Continue **Stage 5 only** from `notes/session-05-handoff.md`: first finish the remaining threshold arithmetic obligation, then compiler-check the digit-sum layer before proceeding to coefficient scaling and the later GCD/extremal theorems. Do not begin Stage 6 until the full cleared Stage-4 theorem package compiles.
+Continue **Stage 5 only** from `notes/session-06-handoff.md`: begin the sparse endpoint formalisation at `q=p^a+1`, then use it with the already-formalised pre-extremal package to prove Target A and Target C. Do not begin Stage 6 until the full cleared Stage-4 theorem package compiles from a clean state.

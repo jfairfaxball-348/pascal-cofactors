@@ -185,3 +185,56 @@ All Stage-4 prior-work boundaries remain unchanged: Pascal Extremes' global
 maximum/`T_p` framework is prior work; the cubic ((2,1)) instance is prior
 work; the complementary Pascal Extremes theorem remains prior work;
 Chung--Yang 2026 remains unresolved; and formalisation is not novelty evidence.
+
+## 8. Stage-5 formalisation checkpoint 2
+
+Formalisation date: **2026-10-02**.
+
+The environment and predecessor pins remain exactly unchanged:
+
+- `jfairfaxball-348/pascal-minus-one@5c0363d43044be94430dff489bd5c64cd153b8d5`;
+- `jfairfaxball-348/Pascal-Extremes@f3a4335d17e333128b9ec16f8b0b139396e5bd94`;
+- Lean `v4.35.0-rc2`;
+- Mathlib `bd6c1abe5f55b6c3856172d6a23703e0888f5286`.
+
+The corrected threshold layer, digit-sum layer, additive coefficient scaling,
+selected-coefficient maximum, exact pre-extremal restricted-GCD formula,
+restricted-GCD maximum, and exact argmax characterization now compile.
+
+New source surfaces since checkpoint 1 are:
+
+- `PascalCofactors/Scaling.lean`, containing the new project theorem
+  `coefficient_scaling` and the selected-coefficient consequences;
+- `PascalCofactors/GCD.lean`, containing the exact pre-extremal
+  restricted-GCD formula and maximum/argmax consequences.
+
+The restricted-GCD layer formally reuses the **prior** Pascal Extremes theorem
+`padicVal_G_eq_of_lower_bound_of_witness` together with its `G` and
+`Admissible` framework. This is predecessor infrastructure, not new work of
+Pascal Cofactors.
+
+A new pinned-Mathlib formal dependency is used at theorem level:
+`Mathlib.Data.Nat.Choose.Lucas`, specifically
+`Choose.eq_pow_multiplicity_of_choose_modEq_zero_nat`. It supplies the
+fixed-prime characterization needed for the base-row dichotomy: if every
+interior binomial coefficient is divisible by `p`, the row is a power of
+`p`. The positive-power side uses Mathlib's `Nat.Prime.dvd_choose_pow`.
+These are existing formal/classical ingredients and are not novelty evidence.
+
+The helper `IsPositivePPower p q` is a proof-engineering representation.
+`isPositivePPower_iff_bounded` reconnects it to the exact mathematical
+condition `q=p^b` with `1≤b≤a` in the finite window.
+
+No lemma was copied from Pascal Minus One and Pascal Minus One remains outside
+the Lean dependency graph. Its `scaling_valuation` must not be conflated with
+`PascalCofactors.coefficient_scaling`.
+
+Clean code-bearing checkpoint:
+`b78321a8af50281f19379b631151c2c934922f17`.
+GitHub Actions run `36987832194`, job `110776801604`, passed dependency
+resolution, cache retrieval, the full Lean build, and the zero-`sorry`/`admit`
+check.
+
+All Stage-4 prior-work and unresolved-literature boundaries remain unchanged.
+In particular, Chung--Yang 2026 remains unresolved at theorem level, and Lean
+formalisation is verification rather than evidence of novelty or priority.
