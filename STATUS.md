@@ -14,15 +14,20 @@ Date: **2026-10-02**
   - Initial theorem-level audit: notes/prior-art-audit-2.md.
   - Independent exact-integer framework and preserved outputs: experiments/stage2_reproduce.py, experiments/stage2-grid.csv, experiments/stage2-exact-gcd.csv, experiments/stage2-run.txt, and experiments/stage2-summary.md.
   - The Stage-1 threshold-bound formulation was found to contain a false lower inequality and was corrected before proof work.
-  - The full text of Chung--Yang (Mediterranean Journal of Mathematics 23, article 209, published 27 September 2026) remained inaccessible in Stage 2 and is still an unresolved Stage-4 comparison.
 
 - **Stage 3 — rigorous informal proof: COMPLETE.**
   - Proof note: notes/stage3-proof.md.
   - Targets A, B, and C are proved informally.
-  - The stronger Stage-2 coefficient-argmax and restricted-GCD observations are also proved informally, in stronger exact forms.
-  - No Stage-4 literature work, Lean, Palomar, paper, or arXiv work was begun.
+  - The stronger coefficient-scaling and exact restricted-GCD statements are proved informally.
 
-- **Stage 4 — deeper final-statement prior-art / novelty audit: NOT STARTED.**
+- **Stage 4 — deeper final-statement prior-art / novelty audit: COMPLETE.**
+  - Final theorem-level audit: notes/prior-art-audit-4.md.
+  - The exact Stage-3 statements, not the earlier conjectural formulations, were audited.
+  - All Stage-2 serious sources were revisited, the pinned predecessors were re-inspected, and materially relevant 2026 literature was searched through 2 October 2026.
+  - The Pascal Extremes predecessor is now also public as arXiv:2610.01328v1 (1 October 2026); it remains same-author prior work.
+  - The Chung--Yang 2026 full theorem text remained subscription-inaccessible after renewed exact-title, DOI, PDF/manuscript, arXiv, ResearchGate, institutional, and SharedIt searches. It remains an explicit unresolved comparison.
+  - No Stage-5 Lean, Palomar, paper, or arXiv work was begun.
+
 - **Stage 5 — Lean formalisation: NOT STARTED.**
 - **Stage 6 — Palomar registration: NOT STARTED.**
 - **Stage 7 — research paper: NOT STARTED.**
@@ -45,7 +50,7 @@ m=C_d(Q)=\frac{Q^d+1}{Q+1}.
   \]
   The false Stage-1 lower bound \(p^{a(d-1)}<m\) remains withdrawn and is not used.
 
-- **Finite-window coefficient scaling: PROVED INFORMALLY.**
+- **Finite-window coefficient scaling: PROVED INFORMALLY; CLEARED FOR STAGE 5.**
   For
   \[
   2\le q\le Q,\qquad 1\le j<q,
@@ -56,20 +61,24 @@ m=C_d(Q)=\frac{Q^d+1}{Q+1}.
   as+v_p\binom qj.
   \]
 
-- **Project Target B: PROVED INFORMALLY.**
+- **Project Target B: PROVED INFORMALLY; CLEARED FOR STAGE 5.**
+  \[
+  v_p\binom{mq}{m}=as+v_p(q),
+  \]
+  so
   \[
   \max_{2\le q\le Q}v_p\binom{mq}{m}
   =
   as+a
   =
-  \frac{a(d+1)}2.
+  \frac{a(d+1)}2,
   \]
-  The stronger Stage-2 observation is also proved: the selected-coefficient maximum is attained uniquely at
+  uniquely at
   \[
   q=Q=p^a.
   \]
 
-- **Restricted-GCD pre-extremal formula: PROVED INFORMALLY.**
+- **Restricted-GCD pre-extremal formula: PROVED INFORMALLY; CLEARED FOR STAGE 5.**
   For every \(2\le q\le Q\),
   \[
   v_p(G(mq;m))
@@ -88,26 +97,23 @@ m=C_d(Q)=\frac{Q^d+1}{Q+1}.
   \]
   with exact argmax set
   \[
-  q\in\{p,p^2,\ldots,p^a\}.
+  \{p,p^2,\ldots,p^a\}.
   \]
 
-- **Sparse endpoint: PROVED INFORMALLY.**
+- **Sparse endpoint: PROVED INFORMALLY; CLEARED FOR STAGE 5.**
   At \(q=Q+1\),
   \[
   m(Q+1)=Q^d+1,
-  \]
-  and
-  \[
+  \qquad
   v_p(G(Q^d+1;m))=a(d-1)=r_p(m).
   \]
 
-- **Project Target A, odd \(d\ge5\): PROVED INFORMALLY.**
+- **Project Target A, odd \(d\ge5\): PROVED INFORMALLY; CLEARED FOR STAGE 5.**
   \[
   T_p(C_d(p^a))=p^{ad}+1.
   \]
-  Endpoint attainment and strict non-attainment for every \(2\le q\le p^a\) are both proved.
 
-- **Project Target C, \(d=3\): PROVED INFORMALLY.**
+- **Project Target C, \(d=3\): PROVED INFORMALLY; CLEARED FOR STAGE 5.**
   \[
   T_p(p^{2a}-p^a+1)=
   \begin{cases}
@@ -115,30 +121,34 @@ m=C_d(Q)=\frac{Q^d+1}{Q+1}.
   p^{3a}+1,&a\ge2.
   \end{cases}
   \]
-  The \((p,a)=(2,1)\), \(m=3,N=6\) valuation-2 phenomenon remains explicitly classified as prior work recorded by McTague and the pinned Pascal Minus One predecessor.
+  The \((p,a)=(2,1)\), \(m=3,N=6\) valuation-2 phenomenon is a prior-work instance recorded by McTague and the pinned Pascal Minus One predecessor. The full family theorem may be formalised, but that isolated instance must never be presented as new.
 
-- **Novelty / historical priority: UNRESOLVED.**
-  - Stage 3 changes theorem status from conjectured to proved informally; it does not establish novelty.
-  - Stage 2 located no mathematically equivalent theorem for the full exact Targets A/B/C in the documented search, but that remains negative-search evidence only.
-  - The recent inaccessible Chung--Yang 2026 source remains an explicit unresolved comparison for Stage 4.
+## Stage-4 literature disposition
 
-## Predecessor dependency checked in Stage 3
+The final audit found substantial prior work and preserved these boundaries:
 
-At the exact pin
-jfairfaxball-348/Pascal-Extremes@f3a4335d17e333128b9ec16f8b0b139396e5bd94,
-the global maximum theorem assumes:
+- the fixed-multiple restricted-GCD family \(G(N;m)\) / Wu's \(g(m,n)\) is prior art;
+- Kummer carries and Legendre/digit-sum valuation formulas are classical;
+- Pascal Extremes supplies the prior global maximum / existence theorem for \(r_p(m)\);
+- Pascal Minus One's \`scaling_valuation\` is prior common-\(p^c\) GCD scaling, but it is mathematically different from the Stage-3 additive coefficient scaling law;
+- Pascal Extremes proves the complementary theorem
+  \[
+  T_p(p^a+1)=p^{3a}+1\qquad(a\ge2),
+  \]
+  where the least multiplier is \(\Phi_6(p^a)\); this does not imply the cofactor-side Target C obtained by swapping the complementary factors;
+- McTague and Pascal Minus One already contain the \((p,a)=(2,1),m=3,N=6\) valuation phenomenon;
+- Wu has exactly the same GCD object under different prime-power-modulus hypotheses;
+- Hong, Chiu--Yuan--Zhou, and Chung--Yang--Zhou use different lower-index selectors;
+- Guo--Qiu--Cao--Feng--Gao use a different aggregation across row multipliers;
+- Chung--Yang 2026 remains an unresolved theorem-level comparison because the full text was not accessible.
 
-- \(p\) prime;
-- \(m\ge2\);
-- \(p\nmid m\).
+No accessible theorem located in the documented Stage-4 search is an exact equivalent of, or theorem-level implication for, the **family-level** Stage-3 cofactor package beyond the explicit prior edge and general predecessor ingredients above. This is a documented-search statement, not a novelty or historical-priority claim.
 
-Stage 3 proves \(m\ge3\) and \(p\nmid m\) for the cofactor family, so the theorem applies and identifies \(r_p(m)\) as the global maximum. The Stage-3 proof directly establishes the new sparse endpoint and lower-multiplier minimality; it does not relabel the predecessor global theorem as new work.
+## Formalisation suitability
 
-The predecessor theorem
-\[
-T_p(p^a+1)=p^{3a}+1\qquad(a\ge2)
-\]
-also remains explicit complementary prior mathematics and is not used to infer Target C.
+**Stage-5 gate: CLEARED.**
+
+The Stage-3 theorem statements remain suitable for Lean formalisation in their strongest proved forms. Stage 5 must preserve the prior-work distinctions in notes/provenance and notes/prior-art-audit-4.md. Formalisation itself will not establish novelty.
 
 ## Stage-2 computational coverage retained as regression evidence only
 
@@ -151,15 +161,16 @@ The preserved Stage-2 run used exact integer arithmetic and:
 - 12,956 independent small Kummer-vs-Legendre sanity comparisons;
 - 225 exact-integer restricted-GCD rows with \(N\le10,000\).
 
-These computations remain regression evidence only. None is used as an infinite proof step in notes/stage3-proof.md.
+These computations remain regression evidence only. None is an infinite proof step or novelty evidence.
 
 ## Proof / experiment / novelty trust boundary
 
 - Stage 3 establishes **rigorous informal proofs**, not Lean formalisation.
+- Stage 4 establishes a **documented final-statement literature audit**, not historical priority.
 - Stage-2 computation is finite evidence only.
-- Proof does not establish novelty or historical priority.
-- No Lean, Palomar, paper, or arXiv work has begun.
+- Chung--Yang 2026 remains unresolved at theorem level.
+- No Lean, Palomar, paper, or arXiv work has begun in this repository.
 
 ## Next action
 
-Run **Stage 4 only**: perform a deeper theorem-level prior-art / novelty audit against the exact final proved statements in notes/stage3-proof.md, including the newly proved finite-window scaling law and exact restricted-GCD formula, and revisit the unresolved Chung--Yang 2026 full text if accessible. Do not begin Lean or any later stage during Stage 4.
+Run **Stage 5 only**: Lean-formalise the exact Stage-3 theorem package that Stage 4 cleared, preserving the pinned predecessor provenance and prior-work boundaries. Do not begin Palomar registration, paper drafting, or arXiv work during Stage 5.
