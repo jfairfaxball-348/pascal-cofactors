@@ -8,48 +8,48 @@ Stage 5 is **COMPLETE**. The entire Stage-4-cleared theorem package S0–S7 is f
 
 The environment was preserved exactly throughout Stage 5:
 
-- Lean: \`leanprover/lean4:v4.35.0-rc2\`.
+- Lean: `leanprover/lean4:v4.35.0-rc2`.
 - Direct formal dependency:
-  \`jfairfaxball-348/Pascal-Extremes@f3a4335d17e333128b9ec16f8b0b139396e5bd94\`.
+  `jfairfaxball-348/Pascal-Extremes@f3a4335d17e333128b9ec16f8b0b139396e5bd94`.
 - Transitive Mathlib:
-  \`bd6c1abe5f55b6c3856172d6a23703e0888f5286\`.
+  `bd6c1abe5f55b6c3856172d6a23703e0888f5286`.
 - Pascal Minus One inspected at
-  \`5c0363d43044be94430dff489bd5c64cd153b8d5\`, but never imported.
+  `5c0363d43044be94430dff489bd5c64cd153b8d5`, but never imported.
 
 No predecessor or toolchain pin was changed.
 
 ## Clean-build completion checkpoint
 
 The final code-bearing completion checkpoint is
-\`545318a6fcf10d9bde1d72345e1794fa05249728\`.
+`545318a6fcf10d9bde1d72345e1794fa05249728`.
 
-GitHub Actions run \`37012780672\`, job \`110856780401\`, completed successfully:
+GitHub Actions run `37012780672`, job `110856780401`, completed successfully:
 
-- \`lake update\` succeeded;
-- \`lake exe cache get\` succeeded;
-- the full \`lake build\` succeeded;
-- the proof-gap check found zero occurrences of \`sorry\` or \`admit\`.
+- `lake update` succeeded;
+- `lake exe cache get` succeeded;
+- the full `lake build` succeeded;
+- the proof-gap check found zero occurrences of `sorry` or `admit`.
 
 The clean commands remain:
 
-\`\`\`bash
+```bash
 lake update
 lake exe cache get
 lake build
 test "$(grep -R -E '\\b(sorry|admit)\\b' --include='*.lean' PascalCofactors PascalCofactors.lean | wc -l)" -eq 0
-\`\`\`
+```
 
 ## Formalised theorem package
 
 ### S0 — corrected threshold
 
-\`PascalCofactors/Threshold.lean\` formalises:
+`PascalCofactors/Threshold.lean` formalises:
 
-- \`C_lower_threshold\`;
-- \`C_upper_threshold\`;
-- \`prime_not_dvd_C\`;
-- \`rP_C\`;
-- \`C_threshold_d\`.
+- `C_lower_threshold`;
+- `C_upper_threshold`;
+- `prime_not_dvd_C`;
+- `rP_C`;
+- `C_threshold_d`.
 
 Thus, for \(d=2s+1\),
 \[
@@ -62,8 +62,8 @@ The false Stage-1 inequality \(p^{a(d-1)}<C_d(p^a)\) was not restored.
 
 ### S1 — finite-window coefficient scaling
 
-\`PascalCofactors/Digits.lean\` proves the finite-window digit-sum shift, and
-\`PascalCofactors/Scaling.lean\` proves \`coefficient_scaling\`:
+`PascalCofactors/Digits.lean` proves the finite-window digit-sum shift, and
+`PascalCofactors/Scaling.lean` proves `coefficient_scaling`:
 \[
 v_p\binom{mq}{mj}=as+v_p\binom qj
 \]
@@ -71,12 +71,12 @@ for \(2\le q\le p^a\) and \(1\le j<q\).
 
 ### S2–S3 — selected coefficient and unique maximum
 
-\`Scaling.lean\` also formalises:
+`Scaling.lean` also formalises:
 
-- \`selected_coefficient\`;
-- \`selected_coefficient_le_max\`;
-- \`selected_coefficient_eq_max_iff\`;
-- \`selected_coefficient_maximum_unique\`.
+- `selected_coefficient`;
+- `selected_coefficient_le_max`;
+- `selected_coefficient_eq_max_iff`;
+- `selected_coefficient_maximum_unique`.
 
 Hence
 \[
@@ -86,15 +86,15 @@ with maximum \(as+a\) uniquely at \(q=p^a\).
 
 ### S4 — exact pre-extremal restricted-GCD formula
 
-\`PascalCofactors/GCD.lean\` formalises:
+`PascalCofactors/GCD.lean` formalises:
 
-- \`restricted_gcd_valuation\`;
-- \`isPositivePPower_iff_bounded\`;
-- \`restricted_gcd_valuation_bounded\`;
-- \`restricted_gcd_le_max\`;
-- \`restricted_gcd_eq_max_iff\`;
-- \`restricted_gcd_maximum_at_p\`;
-- \`restricted_gcd_maximum_and_argmax\`.
+- `restricted_gcd_valuation`;
+- `isPositivePPower_iff_bounded`;
+- `restricted_gcd_valuation_bounded`;
+- `restricted_gcd_le_max`;
+- `restricted_gcd_eq_max_iff`;
+- `restricted_gcd_maximum_at_p`;
+- `restricted_gcd_maximum_and_argmax`.
 
 For \(2\le q\le p^a\),
 \[
@@ -110,12 +110,12 @@ with maximum \(as+1\) and exact argmax set \(\{p,p^2,\ldots,p^a\}\).
 
 ### S5 — sparse endpoint
 
-\`PascalCofactors/Endpoint.lean\` formalises:
+`PascalCofactors/Endpoint.lean` formalises:
 
-- \`endpoint_row_identity\`;
-- \`endpoint_coefficient\`;
-- \`endpoint_gcd_valuation\`;
-- \`endpoint_gcd_valuation_eq_rP\`.
+- `endpoint_row_identity`;
+- `endpoint_coefficient`;
+- `endpoint_gcd_valuation`;
+- `endpoint_gcd_valuation_eq_rP`.
 
 It proves
 \[
@@ -138,10 +138,10 @@ for \(1\le j\le p^a\). The GCD proof derives the lower bound for every admissibl
 
 ### S6 — Target A
 
-\`PascalCofactors/TargetA.lean\` formalises:
+`PascalCofactors/TargetA.lean` formalises:
 
-- \`targetA\`, in the primary \(d=2s+1\), \(s\ge2\) representation;
-- \`targetA_d\`, with the odd degree named explicitly.
+- `targetA`, in the primary \(d=2s+1\), \(s\ge2\) representation;
+- `targetA_d`, with the odd degree named explicitly.
 
 Thus, for every odd \(d\ge5\),
 \[
@@ -150,18 +150,18 @@ T_p(C_d(p^a))=p^{ad}+1.
 
 The proof uses the sparse endpoint for attainment, the pre-extremal bound
 \(as+1<2as\) for every earlier multiplier, and Pascal Extremes' prior
-\`extremalRows\`/\`T\` least-row framework.
+`extremalRows`/`T` least-row framework.
 
 ### S7 — Target C
 
-\`PascalCofactors/TargetC.lean\` formalises:
+`PascalCofactors/TargetC.lean` formalises:
 
-- \`C_cubic\`;
-- \`targetC_a_one_C\`;
-- \`targetC_ge_two_C\`;
-- \`targetC_a_one\`;
-- \`targetC_ge_two\`;
-- \`targetC\`.
+- `C_cubic`;
+- `targetC_a_one_C`;
+- `targetC_ge_two_C`;
+- `targetC_a_one`;
+- `targetC_ge_two`;
+- `targetC`.
 
 It proves
 \[
@@ -180,36 +180,36 @@ and the strict pre-endpoint gap \(a+1<2a\).
 ## Formal dependencies and representation choices
 
 The existing Pascal Extremes dependency supplies prior-work infrastructure:
-\`rP\`, \`G\`, \`Admissible\`, \`AdmissibleRow\`,
-\`padicVal_G_eq_of_lower_bound_of_witness\`, \`extremalRows\`, \`T\`,
-\`T_mem_extremalRows\`, and \`T_isLeast\`.
+`rP`, `G`, `Admissible`, `AdmissibleRow`,
+`padicVal_G_eq_of_lower_bound_of_witness`, `extremalRows`, `T`,
+`T_mem_extremalRows`, and `T_isLeast`.
 
 The endpoint layer uses pinned Mathlib's existing:
 
-- \`Nat.choose_mul_succ_eq\`;
-- \`Nat.Prime.emultiplicity_choose_prime_pow_add_emultiplicity\`;
-- \`padicValNat_eq_emultiplicity\`;
-- \`padicValNat.mul\`.
+- `Nat.choose_mul_succ_eq`;
+- `Nat.Prime.emultiplicity_choose_prime_pow_add_emultiplicity`;
+- `padicValNat_eq_emultiplicity`;
+- `padicValNat.mul`.
 
 The GCD layer continues to use pinned Mathlib's
-\`Choose.eq_pow_multiplicity_of_choose_modEq_zero_nat\` and
-\`Nat.Prime.dvd_choose_pow\`.
+`Choose.eq_pow_multiplicity_of_choose_modEq_zero_nat` and
+`Nat.Prime.dvd_choose_pow`.
 
 Lean's primary odd-degree representation remains \(d=2s+1\). Public wrapper
 theorems reconnect that representation to the exact Stage-3 degree statements.
-The cubic identity \`C_cubic\` reconnects \`C p a 1\` to
+The cubic identity `C_cubic` reconnects `C p a 1` to
 \(p^{2a}-p^a+1\).
 
 Pascal Minus One remains outside the Lean dependency graph. Its
-\`scaling_valuation\` is still a different common-\(p^c\) scaling theorem and
-must not be conflated with \`PascalCofactors.coefficient_scaling\`.
+`scaling_valuation` is still a different common-\(p^c\) scaling theorem and
+must not be conflated with `PascalCofactors.coefficient_scaling`.
 
 ## Provenance / novelty boundary
 
 All Stage-4 literature dispositions remain unchanged:
 
-- Pascal Extremes' global maximum, extremal-row existence, \`rP\`, \`G\`, and
-  \`T\` framework are prior work.
+- Pascal Extremes' global maximum, extremal-row existence, `rP`, `G`, and
+  `T` framework are prior work.
 - The complementary Pascal Extremes theorem
   \(T_p(p^a+1)=p^{3a}+1\) for \(a\ge2\) is prior work and does not replace
   Target C.

@@ -245,58 +245,58 @@ Completion date: **2026-10-02**.
 
 The exact environment remained unchanged through completion:
 
-- \`jfairfaxball-348/pascal-minus-one@5c0363d43044be94430dff489bd5c64cd153b8d5\` remained inspected only;
-- \`jfairfaxball-348/Pascal-Extremes@f3a4335d17e333128b9ec16f8b0b139396e5bd94\` remained the sole direct predecessor Lean dependency;
-- Lean remained \`v4.35.0-rc2\`;
-- Mathlib remained \`bd6c1abe5f55b6c3856172d6a23703e0888f5286\`.
+- `jfairfaxball-348/pascal-minus-one@5c0363d43044be94430dff489bd5c64cd153b8d5` remained inspected only;
+- `jfairfaxball-348/Pascal-Extremes@f3a4335d17e333128b9ec16f8b0b139396e5bd94` remained the sole direct predecessor Lean dependency;
+- Lean remained `v4.35.0-rc2`;
+- Mathlib remained `bd6c1abe5f55b6c3856172d6a23703e0888f5286`.
 
 The new final Stage-5 source surfaces are:
 
-- \`PascalCofactors/Endpoint.lean\`;
-- \`PascalCofactors/TargetA.lean\`;
-- \`PascalCofactors/TargetC.lean\`.
+- `PascalCofactors/Endpoint.lean`;
+- `PascalCofactors/TargetA.lean`;
+- `PascalCofactors/TargetC.lean`.
 
 ### Endpoint dependencies
 
-\`Endpoint.lean\` uses pinned Mathlib's
-\`Nat.choose_mul_succ_eq\`,
-\`Nat.Prime.emultiplicity_choose_prime_pow_add_emultiplicity\`,
-\`padicValNat_eq_emultiplicity\`, and \`padicValNat.mul\` to formalise the
+`Endpoint.lean` uses pinned Mathlib's
+`Nat.choose_mul_succ_eq`,
+`Nat.Prime.emultiplicity_choose_prime_pow_add_emultiplicity`,
+`padicValNat_eq_emultiplicity`, and `padicValNat.mul` to formalise the
 prime-power-plus-one coefficient identity. It then uses the **prior** Pascal
-Extremes theorem \`padicVal_G_eq_of_lower_bound_of_witness\` to pass from the
+Extremes theorem `padicVal_G_eq_of_lower_bound_of_witness` to pass from the
 coefficient lower bound plus the \(j=1\) witness to the restricted-GCD
 valuation. These are existing formal ingredients, not novelty evidence.
 
-The individual theorem \`endpoint_coefficient\` is kept separate from
-\`endpoint_gcd_valuation\` and \`endpoint_gcd_valuation_eq_rP\`. This preserves
+The individual theorem `endpoint_coefficient` is kept separate from
+`endpoint_gcd_valuation` and `endpoint_gcd_valuation_eq_rP`. This preserves
 the Stage-3 proof architecture rather than replacing the GCD theorem by a
 single selected coefficient.
 
 ### Target-A dependencies and representation
 
-\`TargetA.lean\` imports the pinned Pascal Extremes
-\`TargetAAttainment\` surface specifically for the existing
-\`extremalRows\`, \`T\`, \`T_mem_extremalRows\`, and \`T_isLeast\` framework.
+`TargetA.lean` imports the pinned Pascal Extremes
+`TargetAAttainment` surface specifically for the existing
+`extremalRows`, `T`, `T_mem_extremalRows`, and `T_isLeast` framework.
 It does not reprove the predecessor global extremal theory.
 
-The project theorem \`targetA\` uses the primary Lean representation
-\(d=2s+1\), \(s\ge2\). The wrapper \`targetA_d\` states the same result with the
+The project theorem `targetA` uses the primary Lean representation
+\(d=2s+1\), \(s\ge2\). The wrapper `targetA_d` states the same result with the
 odd degree explicitly named, reconnecting to the Stage-3/Stage-4 statement for
 every odd \(d\ge5\).
 
 ### Target-C split and cubic identity
 
-\`TargetC.lean\` proves \`C_cubic\` to reconnect the positive-block cofactor
+`TargetC.lean` proves `C_cubic` to reconnect the positive-block cofactor
 representation at \(s=1\) with \(p^{2a}-p^a+1\).
 
 The two Target-C branches are formally distinct:
 
-- \`targetC_a_one_C\` / \`targetC_a_one\` use the exact pre-extremal
+- `targetC_a_one_C` / `targetC_a_one` use the exact pre-extremal
   restricted-GCD equality classification to force multiplier \(p\);
-- \`targetC_ge_two_C\` / \`targetC_ge_two\` use the sparse endpoint together
+- `targetC_ge_two_C` / `targetC_ge_two` use the sparse endpoint together
   with the strict pre-endpoint gap \(a+1<2a\).
 
-The public \`targetC\` combines those branches into the exact Stage-4-cleared
+The public `targetC` combines those branches into the exact Stage-4-cleared
 piecewise theorem.
 
 The isolated \((p,a)=(2,1),m=3,N=6\) phenomenon remains explicitly classified
@@ -306,11 +306,11 @@ formal inclusion in the family theorem is not a novelty claim.
 ### Final clean code checkpoint
 
 Code-bearing Stage-5 completion checkpoint:
-\`545318a6fcf10d9bde1d72345e1794fa05249728\`.
+`545318a6fcf10d9bde1d72345e1794fa05249728`.
 
-GitHub Actions run \`37012780672\`, job \`110856780401\`, passed dependency
+GitHub Actions run `37012780672`, job `110856780401`, passed dependency
 resolution, Mathlib cache retrieval, the full Lean build, and the
-zero-\`sorry\`/\`admit\` check.
+zero-`sorry`/`admit` check.
 
 No lemma was copied from Pascal Minus One, and Pascal Minus One never entered
 the Lean dependency graph.
