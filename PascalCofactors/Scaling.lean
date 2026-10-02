@@ -105,4 +105,15 @@ theorem coefficient_scaling
   have hpPred : 0 < p - 1 := Nat.sub_pos_of_lt hp.one_lt
   exact Nat.mul_left_cancel hpPred hMul
 
+/-- Stage-3 selected coefficient, obtained from `coefficient_scaling` at `j = 1`. -/
+theorem selected_coefficient
+    {p a s q : ℕ} (hp : p.Prime) (ha : 1 ≤ a) (hs : 1 ≤ s)
+    (hq2 : 2 ≤ q) (hqQ : q ≤ p ^ a) :
+    padicValNat p ((C p a s * q).choose (C p a s)) =
+      a * s + padicValNat p q := by
+  have h := coefficient_scaling
+    (p := p) (a := a) (s := s) (q := q) (j := 1)
+    hp ha hs hq2 hqQ (by omega) (by omega)
+  simpa using h
+
 end PascalCofactors
