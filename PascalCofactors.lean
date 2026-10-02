@@ -6,3 +6,4 @@ import PascalCofactors.Scaling
 import PascalCofactors.GCD
 import PascalCofactors.Endpoint
 import PascalCofactors.TargetA
+import PascalCofactors.TargetC
