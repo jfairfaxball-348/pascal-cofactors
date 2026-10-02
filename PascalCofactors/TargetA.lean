@@ -24,7 +24,6 @@ theorem targetA
   have hmLower := C_lower_threshold hp ha hs1
   have hpowPos : 0 < p ^ (2 * a * s - 1) := pow_pos hp.pos _
   have hm2 : 2 ≤ m := by
-    dsimp [m] at hmLower
     omega
   have hpm : ¬ p ∣ m := by
     simpa [m] using prime_not_dvd_C hp ha
