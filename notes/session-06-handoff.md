@@ -75,28 +75,28 @@ disposition.
 Formalise the sparse endpoint, still exactly as proved in Stage 3.
 
 For prime `p`, `a≥1`, `s≥1`, let
-[
-Q=p^a,qquad d=2s+1,qquad m=C_d(Q).
-]
+\[
+Q=p^a,\qquad d=2s+1,\qquad m=C_d(Q).
+\]
 
 Prove
-[
+\[
 m(Q+1)=Q^d+1=p^{a(2s+1)}+1
-]
+\]
 and
-[
+\[
 v_p(G(Q^d+1;m))=2as=r_p(m).
-]
+\]
 
 Do not weaken this to a selected coefficient or finite computation.
 
 A natural proof route is the Stage-3 endpoint coefficient identity. For
 `1≤j≤Q`, with `P=p^{a(2s+1)}`, prove
-[
+\[
 v_p\binom{P+1}{mj}
 =
 a(2s+1)-v_p(j)-v_p(Q+1-j).
-]
+\]
 Useful pinned ingredients already inspected include:
 
 - `Nat.choose_mul_succ_eq`;

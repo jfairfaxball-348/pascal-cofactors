@@ -65,9 +65,9 @@ The false Stage-1 lower inequality was not restored.
 - `digitSum_C_mul`, including the endpoint `t=p^a`.
 
 Thus the finite-window shift
-[
-s_p(C_d(p^a)t)=s_p(t)+as(p-1),qquad 1\le t\le p^a,
-]
+\[
+s_p(C_d(p^a)t)=s_p(t)+as(p-1),\qquad 1\le t\le p^a,
+\]
 is compiler-certified.
 
 ### Coefficient scaling and selected coefficient
@@ -75,9 +75,9 @@ is compiler-certified.
 `PascalCofactors/Scaling.lean` compiles cleanly.
 
 The exact individual-coefficient theorem `coefficient_scaling` formalises
-[
+\[
 v_p\binom{mq}{mj}=as+v_p\binom qj
-]
+\]
 for `2 ≤ q ≤ p^a` and `1 ≤ j < q`.
 
 The selected-coefficient layer is kept distinct and is also formalised:
@@ -104,14 +104,14 @@ It formalises:
 - `restricted_gcd_maximum_and_argmax`.
 
 Hence for `2 ≤ q ≤ p^a`,
-[
+\[
 v_p(G(mq;m))=
 as+
 \begin{cases}
 1,&q=p^b\text{ for some }1\le b\le a,\\
 0,&\text{otherwise},
 \end{cases}
-]
+\]
 with maximum `as+1` and exact argmax set `{p,p^2,…,p^a}`.
 
 ## Formal dependency / proof-engineering notes
@@ -138,10 +138,10 @@ here.
 ## Remaining Stage-5 package
 
 The next theorem layer is the sparse endpoint at `q=p^a+1`:
-[
-m(p^a+1)=p^{a(2s+1)}+1,qquad
+\[
+m(p^a+1)=p^{a(2s+1)}+1,\qquad
 v_p(G(p^{a(2s+1)}+1;m))=2as=r_p(m).
-]
+\]
 
 After that remain:
 
