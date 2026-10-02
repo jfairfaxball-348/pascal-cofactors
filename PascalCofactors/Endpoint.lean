@@ -162,7 +162,7 @@ theorem endpoint_coefficient
       p ^ (a * (2 * s + 1)) + 1 - C p a s * j =
         C p a s * (p ^ a + 1 - j) := by
     rw [← endpoint_row_identity (p := p) (a := a) (s := s) hp]
-    exact Nat.mul_sub_left_distrib _ _ _
+    exact (Nat.mul_sub_left_distrib _ _ _).symm
   have hdiffVal :
       padicValNat p
           (p ^ (a * (2 * s + 1)) + 1 - C p a s * j) =
