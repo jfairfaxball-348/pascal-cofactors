@@ -61,6 +61,8 @@ theorem coefficient_scaling
       a * s + padicValNat p (q.choose j) := by
   sorry
 
+noncomputable section
+
 local instance classicalPropDecidable (P : Prop) : Decidable P :=
   Classical.propDecidable P
 
@@ -90,5 +92,7 @@ theorem targetC
       else
         p ^ (3 * a) + 1 := by
   sorry
+
+end
 
 end PascalCofactorsPalomar

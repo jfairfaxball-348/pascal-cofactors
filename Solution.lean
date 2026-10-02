@@ -48,6 +48,8 @@ theorem coefficient_scaling
       (p := p) (a := a) (s := s) (q := q) (j := j)
       hp ha hs hq2 hqQ hj1 hjq)
 
+noncomputable section
+
 local instance classicalPropDecidable (P : Prop) : Decidable P :=
   Classical.propDecidable P
 
@@ -56,13 +58,22 @@ theorem restricted_gcd_valuation_bounded
     (hq2 : 2 ≤ q) (hqQ : q ≤ p ^ a) :
     padicValNat p (G (C p a s * q) (C p a s)) =
       a * s + if (∃ b, 1 ≤ b ∧ b ≤ a ∧ q = p ^ b) then 1 else 0 := by
-  simpa only [
-    G, admissibleIndices, C, cofactor,
-    PascalExtremes.G, PascalExtremes.admissibleIndices,
-    PascalCofactors.C, PascalCofactors.cofactor
-  ] using
-    (PascalCofactors.restricted_gcd_valuation_bounded
-      (p := p) (a := a) (s := s) (q := q) hp ha hs hq2 hqQ)
+  have h :=
+    PascalCofactors.restricted_gcd_valuation_bounded
+      (p := p) (a := a) (s := s) (q := q) hp ha hs hq2 hqQ
+  by_cases hpow : ∃ b, 1 ≤ b ∧ b ≤ a ∧ q = p ^ b
+  · rw [if_pos hpow] at h ⊢
+    simpa only [
+      G, admissibleIndices, C, cofactor,
+      PascalExtremes.G, PascalExtremes.admissibleIndices,
+      PascalCofactors.C, PascalCofactors.cofactor
+    ] using h
+  · rw [if_neg hpow] at h ⊢
+    simpa only [
+      G, admissibleIndices, C, cofactor,
+      PascalExtremes.G, PascalExtremes.admissibleIndices,
+      PascalCofactors.C, PascalCofactors.cofactor
+    ] using h
 
 theorem targetA_d
     {p a d s : ℕ} (hp : p.Prime) (ha : 1 ≤ a)
@@ -94,5 +105,7 @@ theorem targetC
     PascalExtremes.admissibleIndices, PascalExtremes.rP
   ] using
     (PascalCofactors.targetC (p := p) (a := a) hp ha)
+
+end
 
 end PascalCofactorsPalomar
