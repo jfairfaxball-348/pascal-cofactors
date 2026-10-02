@@ -45,9 +45,10 @@ private theorem pure_power_choose_witness
   change
     (p - 1) * padicValNat p ((p ^ b).choose j) =
       digitSum p j + digitSum p (p ^ b - j) - digitSum p (p ^ b) at hFormula
-  have hExp : b = (b - 1) + 1 := by omega
   have hpow : p ^ b = p ^ (b - 1) * p := by
-    rw [hExp, pow_succ]
+    calc
+      p ^ b = p ^ ((b - 1) + 1) := by congr 1 <;> omega
+      _ = p ^ (b - 1) * p := by rw [pow_succ]
   have hdiff : p ^ b - j = p ^ (b - 1) * (p - 1) := by
     dsimp [j]
     rw [hpow, Nat.mul_sub_left_distrib, mul_one]
@@ -216,5 +217,7 @@ theorem restricted_gcd_valuation_bounded
       a * s + if (∃ b, 1 ≤ b ∧ b ≤ a ∧ q = p ^ b) then 1 else 0 := by
   rw [restricted_gcd_valuation hp ha hs hq2 hqQ]
   simpa only [isPositivePPower_iff_bounded hp hqQ]
+
+end
 
 end PascalCofactors
