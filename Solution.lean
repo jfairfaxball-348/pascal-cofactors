@@ -53,6 +53,14 @@ noncomputable section
 local instance classicalPropDecidable (P : Prop) : Decidable P :=
   Classical.propDecidable P
 
+private theorem C_eq_project (p a s : ℕ) :
+    C p a s = PascalCofactors.C p a s := by
+  rfl
+
+private theorem G_eq_project (N m : ℕ) :
+    G N m = PascalExtremes.G N m := by
+  rfl
+
 theorem restricted_gcd_valuation_bounded
     {p a s q : ℕ} (hp : p.Prime) (ha : 1 ≤ a) (hs : 1 ≤ s)
     (hq2 : 2 ≤ q) (hqQ : q ≤ p ^ a) :
@@ -63,17 +71,11 @@ theorem restricted_gcd_valuation_bounded
       (p := p) (a := a) (s := s) (q := q) hp ha hs hq2 hqQ
   by_cases hpow : ∃ b, 1 ≤ b ∧ b ≤ a ∧ q = p ^ b
   · rw [if_pos hpow] at h ⊢
-    simpa only [
-      G, admissibleIndices, C, cofactor,
-      PascalExtremes.G, PascalExtremes.admissibleIndices,
-      PascalCofactors.C, PascalCofactors.cofactor
-    ] using h
+    rw [G_eq_project, C_eq_project]
+    exact h
   · rw [if_neg hpow] at h ⊢
-    simpa only [
-      G, admissibleIndices, C, cofactor,
-      PascalExtremes.G, PascalExtremes.admissibleIndices,
-      PascalCofactors.C, PascalCofactors.cofactor
-    ] using h
+    rw [G_eq_project, C_eq_project]
+    exact h
 
 theorem targetA_d
     {p a d s : ℕ} (hp : p.Prime) (ha : 1 ≤ a)
