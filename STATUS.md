@@ -37,7 +37,7 @@ Date: **2026-10-02**
   - `PascalCofactors/Basic.lean`, `Threshold.lean`, `Digits.lean`, `Scaling.lean`, `GCD.lean`, `Endpoint.lean`, `TargetA.lean`, and `TargetC.lean` compile cleanly.
   - The entire Stage-4-cleared theorem package S0–S7 is formalised: corrected threshold, finite-window coefficient scaling, selected coefficient and unique maximum, exact pre-extremal restricted-GCD formula and argmax set, sparse endpoint, Target A for odd `d≥5`, and Target C with separate `a=1` and `a≥2` proofs.
   - Stage 5 is complete. Its final documentation-corrected head remains `61738cd23307ebecdcba6bd85fb7b5d299f9f7db`.
-- **Stage 6 — Palomar packaging and predictive preflight: PACKAGING/PREFLIGHT COMPLETE; HUMAN REGISTRATION PENDING.**
+- **Stage 6 — Palomar packaging and predictive preflight: PACKAGING/PREFLIGHT COMPLETE; REGISTRATION PENDING.**
   - Working branch: `stage-6-palomar`.
   - Current Palomar contract was rechecked at:
     - `PalomarRegistry/PalomarSubmission@65f0154ed776cd26c224254aa57b379137f28b0d`;
@@ -45,13 +45,14 @@ Date: **2026-10-02**
     - `PalomarRegistry/PalomarTemplate@2891de4c48955af824969a263d31b25e7a9a1406`.
   - The Lean tree was mechanically migrated to the module system without changing mathematical theorem statements or proof content.
   - The ordinary root `Challenge.lean`/`Solution.lean` package is retained, while Comparator uses the unique modules `PascalCofactorsChallenge` and `PascalCofactorsSolution` to avoid collision with same-named modules in the pinned Pascal Extremes dependency.
-  - Immutable registration candidate: `db0428e43802bf598582295ffd9358f78a5221e7`.
+  - Predictive-preflight candidate: `db0428e43802bf598582295ffd9358f78a5221e7`.
   - Ordinary Lean CI: run `37021877727`, job `110886714877`: **success**.
   - Palomar package CI: run `37021879105`, job `110886718705`: **success**, including source/module checks, manifest stability, dependency-pin validation, build, proof-gap/axiom checks, hygiene, local Comparator, all three kernels, and advertised-theorem axiom reporting.
   - Full predictive Palomar preflight: run `37021879910`, verify job `110886765551`: **pass**, `stage: complete`, no warnings, no errors, Mathlib-only trusted Challenge closure, Comparator success, and con-ron/NanoDa/Lean-kernel acceptance.
   - Detailed record: `notes/palomar-packaging-6.md`.
-  - This is predictive verification only. No real Palomar submission or registration has been performed, no Palomar ID exists for this project, and Stage 6 is not closed as a registration gate until the human maintainer confirms registration.
-  - Stage 7 remains closed until that registration result is confirmed and recorded.
+  - The human maintainer then submitted commit `db0428e43802bf598582295ffd9358f78a5221e7` to Palomar on 2026-10-02. Palomar verification run `37028652453` succeeded, after which the automated editorial review requested correction of stale current-stage text in `README.md` and `STATUS.md`.
+  - Registration was not offered for that submission. **No Palomar registration has occurred and no Palomar registry ID is claimed.** The documentation correction supersedes the reviewed candidate for the next human resubmission.
+  - Stage 7 remains closed until successful Palomar registration is confirmed and recorded.
 - **Stage 7 — research paper: NOT STARTED.**
 - **Stage 8 — arXiv preparation/submission: NOT STARTED.**
 
@@ -192,9 +193,9 @@ These computations remain regression evidence only. None is an infinite proof st
 - Stage-2 computation is finite evidence only.
 - Chung--Yang 2026 remains unresolved at theorem level.
 - Lean formalisation is clean through the complete Stage-4-cleared S0–S7 package.
-- Palomar packaging and full predictive preflight have passed for immutable candidate `db0428e43802bf598582295ffd9358f78a5221e7`; this is not registration.
+- Palomar packaging and full predictive preflight passed for candidate `db0428e43802bf598582295ffd9358f78a5221e7`; a subsequent human Palomar submission passed mechanical verification but was returned for this documentation correction, and no registration has occurred.
 - No paper drafting or arXiv work has begun.
 
 ## Next action
 
-**Human maintainer action only:** register the verified Stage-6 candidate manually in Palomar using repository `jfairfaxball-348/pascal-cofactors`, root project path, commit `db0428e43802bf598582295ffd9358f78a5221e7`, and Comparator configuration `comparator.json`. The relevant predictive run is `37021879910`. Do not begin Stage 7 until the actual registration result is confirmed and recorded. No assistant should perform the real submission or invent a Palomar ID.
+**Human maintainer action only:** submit the corrected `stage-6-palomar` branch head to Palomar as a new submission using repository `jfairfaxball-348/pascal-cofactors`, root project path, and Comparator configuration `comparator.json`. The underlying package/proof candidate `db0428e43802bf598582295ffd9358f78a5221e7` already passed predictive preflight and the first Palomar mechanical verification; this corrective commit changes only current-stage documentation. Leave any existing Palomar ID blank because registration has not occurred. Do not begin Stage 7 until a successful registration result is confirmed and recorded.
