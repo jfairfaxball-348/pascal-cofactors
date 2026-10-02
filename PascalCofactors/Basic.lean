@@ -35,7 +35,7 @@ theorem add_one_mul_cofactor
         exact_mod_cast ih
       simp only [Nat.cast_mul, Nat.cast_add, Nat.cast_one, Nat.cast_pow,
         Nat.cast_sub hQ]
-      rw [ihZ]
+      rw [mul_add, ihZ]
       rw [show 2 * (s + 1) + 1 = (2 * s + 1) + 2 by omega, pow_add]
       ring
 
