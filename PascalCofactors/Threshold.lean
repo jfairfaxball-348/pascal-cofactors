@@ -64,9 +64,10 @@ private theorem exponent_lower_identity
       a0 + (a0 + 1) * (2 * s0 + 1) + 1 =
         2 * (a0 + 1) * (s0 + 1) := by
     ring
-  have hpos : 0 < 2 * (a0 + 1) * (s0 + 1) := by
-    exact Nat.mul_pos (Nat.mul_pos (by decide) (Nat.succ_pos _)) (Nat.succ_pos _)
-  omega
+  calc
+    a0 + (a0 + 1) * (2 * s0 + 1) =
+        (a0 + (a0 + 1) * (2 * s0 + 1) + 1) - 1 := by omega
+    _ = 2 * (a0 + 1) * (s0 + 1) - 1 := by rw [hRing]
 
 /-- Corrected lower threshold bound. -/
 theorem C_lower_threshold
