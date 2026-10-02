@@ -116,4 +116,92 @@ theorem selected_coefficient
     hp ha hs hq2 hqQ (by omega) (by omega)
   simpa using h
 
+private theorem padicValNat_le_exp_of_le_pow
+    {p a q : ℕ} (hp : p.Prime) (hq1 : 1 ≤ q) (hqQ : q ≤ p ^ a) :
+    padicValNat p q ≤ a := by
+  letI : Fact p.Prime := ⟨hp⟩
+  by_contra h
+  have hv : a + 1 ≤ padicValNat p q := by omega
+  have hq0 : q ≠ 0 := by omega
+  have hdvd : p ^ (a + 1) ∣ q :=
+    (padicValNat_dvd_iff_le hq0).2 hv
+  have hpowLe : p ^ (a + 1) ≤ q :=
+    Nat.le_of_dvd (by omega : 0 < q) hdvd
+  have hpowLt : p ^ a < p ^ (a + 1) := by
+    rw [pow_succ]
+    have hpa : 0 < p ^ a := pow_pos hp.pos _
+    nlinarith [hp.two_le]
+  omega
+
+private theorem padicValNat_eq_exp_iff
+    {p a q : ℕ} (hp : p.Prime) (hq1 : 1 ≤ q) (hqQ : q ≤ p ^ a) :
+    padicValNat p q = a ↔ q = p ^ a := by
+  letI : Fact p.Prime := ⟨hp⟩
+  constructor
+  · intro hv
+    have hq0 : q ≠ 0 := by omega
+    have hdvd : p ^ a ∣ q :=
+      (padicValNat_dvd_iff_le hq0).2 (by omega)
+    apply Nat.le_antisymm hqQ
+    exact Nat.le_of_dvd (by omega : 0 < q) hdvd
+  · rintro rfl
+    exact padicValNat.prime_pow a
+
+/-- Every selected coefficient in the finite window is bounded by the
+Stage-3 maximum `a * (s + 1)`. -/
+theorem selected_coefficient_le_max
+    {p a s q : ℕ} (hp : p.Prime) (ha : 1 ≤ a) (hs : 1 ≤ s)
+    (hq2 : 2 ≤ q) (hqQ : q ≤ p ^ a) :
+    padicValNat p ((C p a s * q).choose (C p a s)) ≤
+      a * (s + 1) := by
+  rw [selected_coefficient (p := p) (a := a) (s := s) (q := q)
+    hp ha hs hq2 hqQ]
+  have hv := padicValNat_le_exp_of_le_pow hp (by omega : 1 ≤ q) hqQ
+  have hExpand : a * (s + 1) = a * s + a := by ring
+  rw [hExpand]
+  omega
+
+/-- Equality in the selected-coefficient bound occurs exactly at `q = p^a`. -/
+theorem selected_coefficient_eq_max_iff
+    {p a s q : ℕ} (hp : p.Prime) (ha : 1 ≤ a) (hs : 1 ≤ s)
+    (hq2 : 2 ≤ q) (hqQ : q ≤ p ^ a) :
+    padicValNat p ((C p a s * q).choose (C p a s)) =
+        a * (s + 1) ↔
+      q = p ^ a := by
+  rw [selected_coefficient (p := p) (a := a) (s := s) (q := q)
+    hp ha hs hq2 hqQ]
+  have hExpand : a * (s + 1) = a * s + a := by ring
+  rw [hExpand]
+  constructor
+  · intro h
+    have hv : padicValNat p q = a := by omega
+    exact (padicValNat_eq_exp_iff hp (by omega : 1 ≤ q) hqQ).1 hv
+  · intro hq
+    have hv : padicValNat p q = a :=
+      (padicValNat_eq_exp_iff hp (by omega : 1 ≤ q) hqQ).2 hq
+    omega
+
+/-- Exact selected-coefficient maximum and unique argmax on
+`2 ≤ q ≤ p^a`, in a pointwise form that records both the witness and
+the complete equality characterization. -/
+theorem selected_coefficient_maximum_unique
+    {p a s : ℕ} (hp : p.Prime) (ha : 1 ≤ a) (hs : 1 ≤ s) :
+    (∀ q, 2 ≤ q → q ≤ p ^ a →
+      padicValNat p ((C p a s * q).choose (C p a s)) ≤ a * (s + 1)) ∧
+    padicValNat p ((C p a s * p ^ a).choose (C p a s)) = a * (s + 1) ∧
+    (∀ q, 2 ≤ q → q ≤ p ^ a →
+      (padicValNat p ((C p a s * q).choose (C p a s)) = a * (s + 1) ↔
+        q = p ^ a)) := by
+  have hQ2 : 2 ≤ p ^ a := by
+    calc
+      2 ≤ p := hp.two_le
+      _ ≤ p ^ a := by
+        simpa [pow_one] using Nat.pow_le_pow_right hp.pos ha
+  refine ⟨?_, ?_, ?_⟩
+  · intro q hq2 hqQ
+    exact selected_coefficient_le_max hp ha hs hq2 hqQ
+  · exact (selected_coefficient_eq_max_iff hp ha hs hQ2 le_rfl).2 rfl
+  · intro q hq2 hqQ
+    exact selected_coefficient_eq_max_iff hp ha hs hq2 hqQ
+
 end PascalCofactors
