@@ -48,7 +48,7 @@ jobs:
       - name: Fetch Mathlib cache
         run: lake exe cache get
       - name: Build project, Challenge, and Solution
-        run: lake build PascalCofactors Challenge Solution
+        run: lake build PascalCofactors Challenge Solution PascalCofactorsChallenge PascalCofactorsSolution
       - name: Reject substantive proof gaps and replacement axioms
         run: |
           if grep -R -n -E '\b(sorry|admit)\b' --include='*.lean' PascalCofactors PascalCofactors.lean; then
@@ -79,7 +79,7 @@ jobs:
           found = [p.name for p in pathlib.Path(".").iterdir() if p.is_file() and accepted.fullmatch(p.name)]
           if found != ["LICENSE"]:
               raise SystemExit(f"expected exactly root LICENSE, found: {found}")
-          challenge = pathlib.Path("Challenge.lean").read_bytes()
+          challenge = pathlib.Path("PascalCofactorsChallenge.lean").read_bytes()
           lines = challenge.count(b"\n") + int(bool(challenge) and not challenge.endswith(b"\n"))
           if lines > 1000 or len(challenge) > 100 * 1024:
               raise SystemExit(f"Challenge too large: {lines} lines, {len(challenge)} bytes")
@@ -97,7 +97,7 @@ jobs:
       - name: Report advertised theorem axioms
         run: |
           cat > "$RUNNER_TEMP/PalomarAxiomAudit.lean" <<'LEAN'
-          import Solution
+          import PascalCofactorsSolution
           #print axioms PascalCofactorsPalomar.coefficient_scaling
           #print axioms PascalCofactorsPalomar.restricted_gcd_valuation_bounded
           #print axioms PascalCofactorsPalomar.targetA_d

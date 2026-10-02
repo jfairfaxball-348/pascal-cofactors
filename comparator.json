@@ -1,6 +1,6 @@
 {
-  "challenge_module": "Challenge",
-  "solution_module": "Solution",
+  "challenge_module": "PascalCofactorsChallenge",
+  "solution_module": "PascalCofactorsSolution",
   "theorem_names": [
     "PascalCofactorsPalomar.coefficient_scaling",
     "PascalCofactorsPalomar.restricted_gcd_valuation_bounded",
