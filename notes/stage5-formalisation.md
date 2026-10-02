@@ -221,6 +221,9 @@ All Stage-4 literature dispositions remain unchanged:
 
 ## Stage gate
 
-**Stage 5 is complete.** The next permitted phase is Stage 6, Palomar
-registration. Paper drafting and arXiv work remain out of scope until their
-later stage gates.
+**Stage 5 is complete.** The next permitted assistant phase is Stage 6, Palomar
+registration packaging and predictive preflight. Stage 6 must stop at a green
+immutable candidate for the human maintainer to register; predictive preflight
+is not registration. Paper drafting and arXiv work remain out of scope until
+the later stage gates, and Stage 7 remains closed until the human maintainer
+confirms successful Palomar registration.

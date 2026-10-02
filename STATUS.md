@@ -36,8 +36,11 @@ Date: **2026-10-02**
   - Clean code-bearing completion checkpoint: `545318a6fcf10d9bde1d72345e1794fa05249728`, GitHub Actions run `37012780672`, job `110856780401`. Dependency resolution, Mathlib cache retrieval, the full `lake build`, and the zero-`sorry`/`admit` check all succeeded.
   - `PascalCofactors/Basic.lean`, `Threshold.lean`, `Digits.lean`, `Scaling.lean`, `GCD.lean`, `Endpoint.lean`, `TargetA.lean`, and `TargetC.lean` compile cleanly.
   - The entire Stage-4-cleared theorem package S0–S7 is formalised: corrected threshold, finite-window coefficient scaling, selected coefficient and unique maximum, exact pre-extremal restricted-GCD formula and argmax set, sparse endpoint, Target A for odd `d≥5`, and Target C with separate `a=1` and `a≥2` proofs.
-  - Stage 5 is complete. No Stage-6 registration work has yet been performed.
-- **Stage 6 — Palomar registration: NOT STARTED.**
+  - Stage 5 is complete. No Stage-6 Palomar packaging or predictive-preflight work has yet been performed.
+- **Stage 6 — Palomar packaging and predictive preflight: NOT STARTED.**
+  - Assistant scope: prepare a registrable immutable Palomar candidate and obtain a green full predictive preflight.
+  - The actual Palomar submission/registration is reserved for the human maintainer after packaging is complete. A predictive preflight must never be recorded as registration.
+  - Stage 7 remains closed until the human maintainer confirms successful Palomar registration.
 - **Stage 7 — research paper: NOT STARTED.**
 - **Stage 8 — arXiv preparation/submission: NOT STARTED.**
 
@@ -177,8 +180,8 @@ These computations remain regression evidence only. None is an infinite proof st
 - Stage 4 establishes a **documented final-statement literature audit**, not historical priority.
 - Stage-2 computation is finite evidence only.
 - Chung--Yang 2026 remains unresolved at theorem level.
-- Lean formalisation is clean through the complete Stage-4-cleared S0–S7 package. No Palomar, paper, or arXiv work has begun.
+- Lean formalisation is clean through the complete Stage-4-cleared S0–S7 package. No Palomar packaging/preflight, paper, or arXiv work has begun.
 
 ## Next action
 
-Proceed to **Stage 6 — Palomar registration only**, using the completed Stage-5 theorem package and preserving every provenance/novelty boundary. Do not begin paper drafting or arXiv work during Stage 6.
+Proceed to **Stage 6 — Palomar packaging and predictive preflight only**. Prepare an immutable registrable package, run the required repository/package checks and the pinned full Palomar predictive-preflight workflow, inspect its report, and stop with the exact green commit for the human maintainer to register. Do not perform or claim the actual registration. Do not begin paper drafting or arXiv work.

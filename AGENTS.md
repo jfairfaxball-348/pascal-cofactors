@@ -11,7 +11,7 @@ Do not silently skip, merge, or reorder these stages:
 3. rigorous informal proof;
 4. deeper theorem-level prior-art / novelty audit of the final proved statements;
 5. Lean formalisation;
-6. Palomar registration;
+6. Palomar registration packaging and predictive preflight; the human maintainer performs the actual Palomar registration after the package is ready;
 7. research paper;
 8. arXiv preparation and submission.
 
@@ -40,7 +40,7 @@ A negative literature search supports only wording such as “no equivalent resu
 
 Experiments must use exact integer arithmetic. Important computational claims should be checked by mathematically independent implementations where feasible. Do not use experiments as steps in an infinite proof.
 
-Do not begin substantive Lean development before Stage 4 clears the exact proved theorem statements. Do not begin the full paper before Palomar registration is complete. Do not begin arXiv submission in the same session as paper writing.
+Do not begin substantive Lean development before Stage 4 clears the exact proved theorem statements. Stage 6 assistant work prepares the Palomar package and runs predictive preflight only; it must stop at a green immutable candidate for the human maintainer to register. Predictive preflight is not registration. Do not begin the full paper before the human maintainer has confirmed Palomar registration is complete. Do not begin arXiv submission in the same session as paper writing.
 
 ## Core notation
 
