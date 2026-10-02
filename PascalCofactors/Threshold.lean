@@ -39,13 +39,17 @@ private theorem pow_pred_le_pow_sub_one
   have haEq : a = (a - 1) + 1 := by omega
   have hx : 0 < p ^ (a - 1) := pow_pos hp.pos _
   have hx1 : 1 ≤ p ^ (a - 1) := by omega
+  have hpa : p ^ a = p ^ (a - 1) * p := by
+    calc
+      p ^ a = p ^ ((a - 1) + 1) := by rw [← haEq]
+      _ = p ^ (a - 1) * p := by rw [pow_succ]
   have hstep : p ^ (a - 1) + 1 ≤ p ^ a := by
     calc
       p ^ (a - 1) + 1 ≤ p ^ (a - 1) + p ^ (a - 1) :=
         Nat.add_le_add_left hx1 _
       _ = p ^ (a - 1) * 2 := by ring
       _ ≤ p ^ (a - 1) * p := Nat.mul_le_mul_left _ hp.two_le
-      _ = p ^ a := by rw [haEq, pow_succ]
+      _ = p ^ a := hpa.symm
   omega
 
 private theorem exponent_lower_identity
@@ -60,7 +64,8 @@ private theorem exponent_lower_identity
       a0 + (a0 + 1) * (2 * s0 + 1) + 1 =
         2 * (a0 + 1) * (s0 + 1) := by
     ring
-  have hpos : 1 ≤ 2 * (a0 + 1) * (s0 + 1) := by positivity
+  have hpos : 0 < 2 * (a0 + 1) * (s0 + 1) := by
+    exact Nat.mul_pos (Nat.mul_pos (by decide) (Nat.succ_pos _)) (Nat.succ_pos _)
   omega
 
 /-- Corrected lower threshold bound. -/
@@ -106,7 +111,9 @@ theorem prime_not_dvd_C
   have hSum : p ∣ (p ^ a) ^ (2 * s + 1) + 1 := by
     rw [← add_one_mul_C hp]
     exact dvd_mul_of_dvd_right hC (p ^ a + 1)
-  have hOne : p ∣ 1 := (Nat.dvd_add_iff_right hPow).mp hSum
+  have hOne' : p ∣ ((p ^ a) ^ (2 * s + 1) + 1) - (p ^ a) ^ (2 * s + 1) :=
+    Nat.dvd_sub hSum hPow
+  have hOne : p ∣ 1 := by simpa using hOne'
   exact hp.not_dvd_one hOne
 
 /-- Exact Pascal-Extremes threshold for the odd cofactor. -/
