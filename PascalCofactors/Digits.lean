@@ -36,11 +36,22 @@ theorem digitSum_pow_mul
   have h0 : 0 < p ^ a := pow_pos hp.pos _
   simpa using digitSum_add_pow_mul (p := p) (a := a) (x := 0) (y := y) hp h0
 
-@[simp] theorem digitSum_one {p : ℕ} (hp : p.Prime) : digitSum p 1 = 1 := by
-  simp [digitSum, Nat.digits_of_lt p 1 (by decide) hp.one_lt]
+theorem digitSum_of_lt
+    {p n : ℕ} (hp : p.Prime) (hn : n < p) :
+    digitSum p n = n := by
+  by_cases h0 : n = 0
+  · subst n
+    simp [digitSum]
+  · simp [digitSum, Nat.digits_of_lt p n h0 hn]
+
+@[simp] theorem digitSum_one {p : ℕ} (hp : p.Prime) : digitSum p 1 = 1 :=
+  digitSum_of_lt hp hp.one_lt
 
 @[simp] theorem digitSum_pow {p a : ℕ} (hp : p.Prime) : digitSum p (p ^ a) = 1 := by
-  simpa using (digitSum_pow_mul (p := p) (a := a) (y := 1) hp)
+  calc
+    digitSum p (p ^ a) = digitSum p 1 :=
+      digitSum_pow_mul (p := p) (a := a) (y := 1) hp
+    _ = 1 := digitSum_one hp
 
 private theorem complement_decomp
     {p a u : ℕ} (hp : p.Prime) (hu : u < p ^ (a + 1)) :
@@ -51,8 +62,32 @@ private theorem complement_decomp
     rw [Nat.div_lt_iff_lt_mul hp.pos]
     simpa [pow_succ, Nat.mul_comm] using hu
   have hdecomp : u % p + p * (u / p) = u := Nat.mod_add_div u p
-  rw [pow_succ, Nat.mul_comm (p ^ a) p]
-  rw [Nat.mul_sub_left_distrib, Nat.mul_sub_left_distrib]
+  have hlow :
+      (p - 1 - u % p) + (u % p + 1) = p := by
+    omega
+  have hhigh :
+      (p ^ a - 1 - u / p) + (u / p + 1) = p ^ a := by
+    omega
+  have hhighMul :
+      p * (p ^ a - 1 - u / p) + p * (u / p + 1) = p * p ^ a := by
+    rw [← Nat.mul_add, hhigh]
+  have hpq : p * (u / p + 1) = p * (u / p) + p := by
+    ring
+  rw [hpq] at hhighMul
+  have huplus : u + 1 = u % p + p * (u / p) + 1 := by
+    omega
+  have hright :
+      (p - 1 - u % p) + p * (p ^ a - 1 - u / p) + (u + 1) =
+        p * p ^ a := by
+    rw [huplus]
+    omega
+  have hleft :
+      (p ^ (a + 1) - 1 - u) + (u + 1) = p ^ (a + 1) := by
+    omega
+  have hpow : p ^ (a + 1) = p * p ^ a := by
+    rw [pow_succ]
+    ring
+  rw [hpow] at hleft
   omega
 
 /-- Digitwise complement under `p^a-1` (Stage-3 Lemma 3.1). -/
@@ -72,13 +107,27 @@ theorem digitSum_complement
       have hcomp := complement_decomp (p := p) (a := a) (u := u) hp
         (by simpa [Nat.succ_eq_add_one] using hu)
       have huDecomp : u = u % p + p * (u / p) := (Nat.mod_add_div u p).symm
-      rw [hcomp, huDecomp]
-      rw [digitSum_add_pow_mul (p := p) (a := 1) hp (by simpa using (Nat.sub_lt hp.pos hr))]
-      rw [digitSum_add_pow_mul (p := p) (a := 1) hp (by simpa using hr)]
-      have hih := ih hp hv
+      rw [hcomp]
+      have hlowDigit : p - 1 - u % p < p := by omega
+      have hsplitComp :
+          digitSum p ((p - 1 - u % p) + p * (p ^ a - 1 - u / p)) =
+            digitSum p (p - 1 - u % p) + digitSum p (p ^ a - 1 - u / p) := by
+        simpa using
+          (digitSum_add_pow_mul
+            (p := p) (a := 1) (x := p - 1 - u % p)
+            (y := p ^ a - 1 - u / p) hp (by simpa using hlowDigit))
+      rw [hsplitComp]
+      have hsplitU :
+          digitSum p u = digitSum p (u % p) + digitSum p (u / p) := by
+        rw [huDecomp]
+        simpa using
+          (digitSum_add_pow_mul
+            (p := p) (a := 1) (x := u % p) (y := u / p) hp
+            (by simpa using hr))
+      rw [hsplitU, digitSum_of_lt hp hlowDigit, digitSum_of_lt hp hr]
+      have hih := ih hv
       have hrle : u % p ≤ p - 1 := by omega
       have hlow : (p - 1 - u % p) + u % p = p - 1 := Nat.sub_add_cancel hrle
-      simp only [pow_one] at *
       omega
 
 theorem cofactor_le_pow_even
@@ -92,7 +141,22 @@ theorem cofactor_le_pow_even
 private theorem high_block_eq
     {Q t : ℕ} (ht1 : 1 ≤ t) (htQ : t ≤ Q) :
     t * (Q - 1) = (Q - t) + Q * (t - 1) := by
-  rw [Nat.mul_sub_left_distrib, Nat.mul_sub_left_distrib]
+  have hQ1 : 1 ≤ Q := ht1.trans htQ
+  have hleft : t * (Q - 1) + t = Q * t := by
+    calc
+      t * (Q - 1) + t = t * (Q - 1) + t * 1 := by simp
+      _ = t * ((Q - 1) + 1) := by rw [Nat.mul_add]
+      _ = t * Q := by rw [Nat.sub_add_cancel hQ1]
+      _ = Q * t := Nat.mul_comm _ _
+  have hright : (Q - t) + Q * (t - 1) + t = Q * t := by
+    calc
+      (Q - t) + Q * (t - 1) + t =
+          (Q - t + t) + Q * (t - 1) := by ring
+      _ = Q + Q * (t - 1) := by rw [Nat.sub_add_cancel htQ]
+      _ = Q * (1 + (t - 1)) := by ring
+      _ = Q * t := by
+        congr
+        omega
   omega
 
 private theorem digitSum_high_block
@@ -134,7 +198,8 @@ theorem digitSum_C_mul_lt
             simpa [Q, pow_one] using Nat.pow_le_pow_right hp.pos ha
       have hlow : C p a s * t < Q ^ (2 * s + 1) := by
         have hC := cofactor_le_pow_even (Q := Q) (s := s) hQ2
-        have hmul := Nat.mul_lt_mul_of_le_of_lt hC htQ
+        have hpowPos : 0 < Q ^ (2 * s) := pow_pos (by omega : 0 < Q) _
+        have hmul := Nat.mul_lt_mul_of_le_of_lt hC htQ hpowPos
         simpa [C, Q, pow_succ, Nat.mul_assoc, Nat.mul_comm, Nat.mul_left_comm] using hmul
       have hExp : Q ^ (2 * s + 1) = p ^ (a * (2 * s + 1)) := by
         simp [Q, ← pow_mul]
@@ -143,7 +208,7 @@ theorem digitSum_C_mul_lt
             C p a s * t + Q ^ (2 * s + 1) * (t * (Q - 1)) := by
         simp only [C, cofactor_succ]
         ring
-      rw [show Nat.succ s = s + 1 by omega, hRec, hExp]
+      rw [hRec, hExp]
       rw [digitSum_add_pow_mul hp (by simpa [hExp] using hlow)]
       rw [ih]
       have hhigh := digitSum_high_block hp ha ht1 htQ
@@ -161,7 +226,7 @@ theorem digitSum_C_mul
   · exact digitSum_C_mul_lt hp ha ht1 hlt
   have htEq : t = p ^ a := by omega
   subst t
-  rw [digitSum_pow_mul hp]
+  rw [show C p a s * p ^ a = p ^ a * C p a s by ring, digitSum_pow_mul hp]
   have hQ2 : 2 ≤ p ^ a := by
     calc
       2 ≤ p := hp.two_le
