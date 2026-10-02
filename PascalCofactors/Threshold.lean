@@ -38,9 +38,14 @@ private theorem pow_pred_le_pow_sub_one
     p ^ (a - 1) ≤ p ^ a - 1 := by
   have haEq : a = (a - 1) + 1 := by omega
   have hx : 0 < p ^ (a - 1) := pow_pos hp.pos _
+  have hx1 : 1 ≤ p ^ (a - 1) := by omega
   have hstep : p ^ (a - 1) + 1 ≤ p ^ a := by
-    rw [haEq, pow_succ]
-    nlinarith [hp.two_le]
+    calc
+      p ^ (a - 1) + 1 ≤ p ^ (a - 1) + p ^ (a - 1) :=
+        Nat.add_le_add_left hx1 _
+      _ = p ^ (a - 1) * 2 := by ring
+      _ ≤ p ^ (a - 1) * p := Nat.mul_le_mul_left _ hp.two_le
+      _ = p ^ a := by rw [haEq, pow_succ]
   omega
 
 private theorem exponent_lower_identity
@@ -55,7 +60,7 @@ private theorem exponent_lower_identity
       a0 + (a0 + 1) * (2 * s0 + 1) + 1 =
         2 * (a0 + 1) * (s0 + 1) := by
     ring
-  rw [← hRing]
+  have hpos : 1 ≤ 2 * (a0 + 1) * (s0 + 1) := by positivity
   omega
 
 /-- Corrected lower threshold bound. -/
@@ -95,13 +100,13 @@ theorem prime_not_dvd_C
     {p a s : ℕ} (hp : p.Prime) (ha : 1 ≤ a) :
     ¬ p ∣ C p a s := by
   intro hC
-  have hQ : p ∣ p ^ a := dvd_pow_self p ha
+  have hQ : p ∣ p ^ a := dvd_pow_self p (by omega : a ≠ 0)
   have hPow : p ∣ (p ^ a) ^ (2 * s + 1) := by
     exact hQ.trans (dvd_pow_self (p ^ a) (by omega))
   have hSum : p ∣ (p ^ a) ^ (2 * s + 1) + 1 := by
     rw [← add_one_mul_C hp]
     exact dvd_mul_of_dvd_right hC (p ^ a + 1)
-  have hOne : p ∣ 1 := (Nat.dvd_add_iff_left hPow).mp hSum
+  have hOne : p ∣ 1 := (Nat.dvd_add_iff_right hPow).mp hSum
   exact hp.not_dvd_one hOne
 
 /-- Exact Pascal-Extremes threshold for the odd cofactor. -/
@@ -111,9 +116,12 @@ theorem rP_C
   have hlo := C_lower_threshold hp ha hs
   have hup := C_upper_threshold hp ha hs
   have hR : 1 ≤ 2 * a * s := by nlinarith
+  have hstep : 2 * a * s - 1 + 1 = 2 * a * s := by omega
+  have hup' : C p a s < p ^ (2 * a * s - 1 + 1) := by
+    simpa [hstep] using hup
   have hlog :
       Nat.log p (C p a s) = 2 * a * s - 1 :=
-    Nat.log_eq_of_pow_le_of_lt_pow hlo.le hup
+    Nat.log_eq_of_pow_le_of_lt_pow hlo.le hup'
   simp [PascalExtremes.rP, hlog]
   omega
 
