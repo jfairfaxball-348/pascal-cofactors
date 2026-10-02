@@ -23,9 +23,10 @@ jobs:
           persist-credentials: false
       - name: Check Lean source requirements
         run: python3 scripts/check-lean-sources.py
-      - uses: leanprover/lean-action@38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9
-        with:
-          build: false
+      - name: Install Elan
+        run: |
+          curl -sSf https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
       - name: Regenerate and verify Lake manifest
         run: |
           lake update
