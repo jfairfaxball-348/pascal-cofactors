@@ -7,6 +7,11 @@ namespace PascalCofactors
 
 open PascalExtremes
 
+noncomputable section
+
+local instance classicalPropDecidable (P : Prop) : Decidable P :=
+  Classical.propDecidable P
+
 /-- A positive power of the fixed prime `p`. -/
 def IsPositivePPower (p q : ℕ) : Prop :=
   ∃ b, 1 ≤ b ∧ q = p ^ b
@@ -41,10 +46,11 @@ private theorem pure_power_choose_witness
     (p - 1) * padicValNat p ((p ^ b).choose j) =
       digitSum p j + digitSum p (p ^ b - j) - digitSum p (p ^ b) at hFormula
   have hExp : b = (b - 1) + 1 := by omega
+  have hpow : p ^ b = p ^ (b - 1) * p := by
+    rw [hExp, pow_succ]
   have hdiff : p ^ b - j = p ^ (b - 1) * (p - 1) := by
     dsimp [j]
-    rw [hExp, pow_succ]
-    rw [Nat.mul_sub_left_distrib, mul_one]
+    rw [hpow, Nat.mul_sub_left_distrib, mul_one]
   have hDSj : digitSum p j = 1 := by
     dsimp [j]
     exact digitSum_pow hp
@@ -53,7 +59,8 @@ private theorem pure_power_choose_witness
     calc
       digitSum p (p ^ (b - 1) * (p - 1)) = digitSum p (p - 1) :=
         digitSum_pow_mul hp
-      _ = p - 1 := digitSum_of_lt hp (by omega)
+      _ = p - 1 :=
+        digitSum_of_lt hp (Nat.sub_lt hp.pos (by decide : 0 < 1))
   have hDSq : digitSum p (p ^ b) = 1 := digitSum_pow hp
   rw [hDSj, hDSdiff, hDSq] at hFormula
   have hpPred : 0 < p - 1 := Nat.sub_pos_of_lt hp.one_lt
@@ -103,8 +110,8 @@ private theorem scaled_admissible_index
   have hjpos : 0 < j := by
     by_contra h
     have hj0 : j = 0 := Nat.eq_zero_of_not_pos h
-    rw [hj, hj0, mul_zero] at hk
-    omega
+    have hk0 : k = 0 := by simpa [hj0] using hj
+    exact (Nat.ne_of_gt hk.1) hk0
   have hjlt : j < q := by
     have hmul : m * j < m * q := by simpa [hj] using hk.2.1
     exact (Nat.mul_lt_mul_left hm).mp hmul
@@ -208,6 +215,6 @@ theorem restricted_gcd_valuation_bounded
     padicValNat p (G (C p a s * q) (C p a s)) =
       a * s + if (∃ b, 1 ≤ b ∧ b ≤ a ∧ q = p ^ b) then 1 else 0 := by
   rw [restricted_gcd_valuation hp ha hs hq2 hqQ]
-  rw [isPositivePPower_iff_bounded hp hqQ]
+  simpa only [isPositivePPower_iff_bounded hp hqQ]
 
 end PascalCofactors
