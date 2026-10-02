@@ -1,0 +1,11 @@
+name = "pascal-cofactors"
+version = "0.1.0"
+defaultTargets = ["PascalCofactors"]
+
+[[require]]
+name = "pascal-extremes"
+git = "https://github.com/jfairfaxball-348/Pascal-Extremes.git"
+rev = "f3a4335d17e333128b9ec16f8b0b139396e5bd94"
+
+[[lean_lib]]
+name = "PascalCofactors"
