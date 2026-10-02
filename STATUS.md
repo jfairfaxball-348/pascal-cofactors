@@ -28,15 +28,15 @@ Date: **2026-10-02**
   - The Chung--Yang 2026 full theorem text remained subscription-inaccessible after renewed exact-title, DOI, PDF/manuscript, arXiv, ResearchGate, institutional, and SharedIt searches. It remains an explicit unresolved comparison.
   - No Stage-5 Lean, Palomar, paper, or arXiv work was begun.
 
-- **Stage 5 — Lean formalisation: IN PROGRESS.**
+- **Stage 5 — Lean formalisation: COMPLETE.**
   - Working branch: `stage5-lean`.
-  - Lean toolchain pinned to `leanprover/lean4:v4.35.0-rc2`.
-  - Formal dependency pinned to `jfairfaxball-348/Pascal-Extremes@f3a4335d17e333128b9ec16f8b0b139396e5bd94`; its manifest pins Mathlib to `bd6c1abe5f55b6c3856172d6a23703e0888f5286`.
-  - Clean code-bearing checkpoint: `b78321a8af50281f19379b631151c2c934922f17`, GitHub Actions run `36987832194`, job `110776801604`. Dependency resolution, Mathlib cache retrieval, `lake build`, and the zero-`sorry`/`admit` check all succeeded.
-  - `PascalCofactors/Basic.lean`, `Threshold.lean`, `Digits.lean`, `Scaling.lean`, and `GCD.lean` compile cleanly.
-  - The corrected threshold, finite-window digit-sum shift, additive coefficient scaling, selected-coefficient formula and unique maximum, exact pre-extremal restricted-GCD formula, restricted-GCD maximum, and exact argmax set are formalised.
-  - The sparse endpoint, Target A, and Target C remain to be formalised.
-  - Stage 5 is not complete; no Stage-6 work has begun.
+  - Lean toolchain remained pinned to `leanprover/lean4:v4.35.0-rc2`.
+  - Formal dependency remained pinned to `jfairfaxball-348/Pascal-Extremes@f3a4335d17e333128b9ec16f8b0b139396e5bd94`; its manifest pins Mathlib to `bd6c1abe5f55b6c3856172d6a23703e0888f5286`.
+  - Pascal Minus One remained inspected at `5c0363d43044be94430dff489bd5c64cd153b8d5` and was not added to the Lean dependency graph.
+  - Clean code-bearing completion checkpoint: `545318a6fcf10d9bde1d72345e1794fa05249728`, GitHub Actions run `37012780672`, job `110856780401`. Dependency resolution, Mathlib cache retrieval, the full `lake build`, and the zero-`sorry`/`admit` check all succeeded.
+  - `PascalCofactors/Basic.lean`, `Threshold.lean`, `Digits.lean`, `Scaling.lean`, `GCD.lean`, `Endpoint.lean`, `TargetA.lean`, and `TargetC.lean` compile cleanly.
+  - The entire Stage-4-cleared theorem package S0–S7 is formalised: corrected threshold, finite-window coefficient scaling, selected coefficient and unique maximum, exact pre-extremal restricted-GCD formula and argmax set, sparse endpoint, Target A for odd `d≥5`, and Target C with separate `a=1` and `a≥2` proofs.
+  - Stage 5 is complete. No Stage-6 registration work has yet been performed.
 - **Stage 6 — Palomar registration: NOT STARTED.**
 - **Stage 7 — research paper: NOT STARTED.**
 - **Stage 8 — arXiv preparation/submission: NOT STARTED.**
@@ -108,7 +108,7 @@ m=C_d(Q)=\frac{Q^d+1}{Q+1}.
   \{p,p^2,\ldots,p^a\}.
   \]
 
-- **Sparse endpoint: PROVED INFORMALLY; CLEARED FOR STAGE 5; NOT YET FORMALISED.**
+- **Sparse endpoint: FORMALISED IN LEAN.**
   At \(q=Q+1\),
   \[
   m(Q+1)=Q^d+1,
@@ -116,12 +116,12 @@ m=C_d(Q)=\frac{Q^d+1}{Q+1}.
   v_p(G(Q^d+1;m))=a(d-1)=r_p(m).
   \]
 
-- **Project Target A, odd \(d\ge5\): PROVED INFORMALLY; CLEARED FOR STAGE 5; NOT YET FORMALISED.**
+- **Project Target A, odd \(d\ge5\): FORMALISED IN LEAN.**
   \[
   T_p(C_d(p^a))=p^{ad}+1.
   \]
 
-- **Project Target C, \(d=3\): PROVED INFORMALLY; CLEARED FOR STAGE 5; NOT YET FORMALISED.**
+- **Project Target C, \(d=3\): FORMALISED IN LEAN.**
   \[
   T_p(p^{2a}-p^a+1)=
   \begin{cases}
@@ -154,9 +154,9 @@ No accessible theorem located in the documented Stage-4 search is an exact equiv
 
 ## Formalisation suitability
 
-**Stage-5 gate: CLEARED.**
+**Stage-5 gate: COMPLETED.**
 
-The Stage-3 theorem statements remain suitable for Lean formalisation in their strongest proved forms. Stage 5 must preserve the prior-work distinctions in notes/provenance and notes/prior-art-audit-4.md. Formalisation itself will not establish novelty.
+The Stage-3 theorem statements have now been formalised in their strongest Stage-4-cleared forms. The prior-work distinctions in notes/provenance.md and notes/prior-art-audit-4.md remain binding. Formalisation verifies the mathematics; it does not establish novelty or historical priority.
 
 ## Stage-2 computational coverage retained as regression evidence only
 
@@ -177,8 +177,8 @@ These computations remain regression evidence only. None is an infinite proof st
 - Stage 4 establishes a **documented final-statement literature audit**, not historical priority.
 - Stage-2 computation is finite evidence only.
 - Chung--Yang 2026 remains unresolved at theorem level.
-- Lean formalisation is clean through the pre-extremal restricted-GCD maximum/argmax package and remains incomplete at the sparse endpoint. No Palomar, paper, or arXiv work has begun.
+- Lean formalisation is clean through the complete Stage-4-cleared S0–S7 package. No Palomar, paper, or arXiv work has begun.
 
 ## Next action
 
-Continue **Stage 5 only** from `notes/session-06-handoff.md`: begin the sparse endpoint formalisation at `q=p^a+1`, then use it with the already-formalised pre-extremal package to prove Target A and Target C. Do not begin Stage 6 until the full cleared Stage-4 theorem package compiles from a clean state.
+Proceed to **Stage 6 — Palomar registration only**, using the completed Stage-5 theorem package and preserving every provenance/novelty boundary. Do not begin paper drafting or arXiv work during Stage 6.
