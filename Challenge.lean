@@ -61,6 +61,9 @@ theorem coefficient_scaling
       a * s + padicValNat p (q.choose j) := by
   sorry
 
+local instance classicalPropDecidable (P : Prop) : Decidable P :=
+  Classical.propDecidable P
+
 /-- Exact pre-extremal restricted-gcd valuation throughout
 `2 ≤ q ≤ p^a`. -/
 theorem restricted_gcd_valuation_bounded

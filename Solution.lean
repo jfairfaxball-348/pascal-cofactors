@@ -48,6 +48,9 @@ theorem coefficient_scaling
       (p := p) (a := a) (s := s) (q := q) (j := j)
       hp ha hs hq2 hqQ hj1 hjq)
 
+local instance classicalPropDecidable (P : Prop) : Decidable P :=
+  Classical.propDecidable P
+
 theorem restricted_gcd_valuation_bounded
     {p a s q : ℕ} (hp : p.Prime) (ha : 1 ≤ a) (hs : 1 ≤ s)
     (hq2 : 2 ≤ q) (hqQ : q ≤ p ^ a) :
@@ -65,12 +68,14 @@ theorem targetA_d
     {p a d s : ℕ} (hp : p.Prime) (ha : 1 ≤ a)
     (hs : 1 ≤ s) (hd : d = 2 * s + 1) (hd5 : 5 ≤ d) :
     T p (C p a s) = p ^ (a * d) + 1 := by
+  have hC : C p a s = PascalCofactors.C p a s := by
+    rfl
+  rw [hC]
   simpa only [
-    T, extremalRows, AdmissibleRow, G, admissibleIndices, rP, C, cofactor,
+    T, extremalRows, AdmissibleRow, G, admissibleIndices, rP,
     PascalExtremes.T, PascalExtremes.extremalRows,
     PascalExtremes.AdmissibleRow, PascalExtremes.G,
-    PascalExtremes.admissibleIndices, PascalExtremes.rP,
-    PascalCofactors.C, PascalCofactors.cofactor
+    PascalExtremes.admissibleIndices, PascalExtremes.rP
   ] using
     (PascalCofactors.targetA_d
       (p := p) (a := a) (d := d) (s := s) hp ha hs hd hd5)
