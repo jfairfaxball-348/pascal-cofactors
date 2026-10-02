@@ -252,6 +252,7 @@ theorem digitSum_C_mul
   have hOne := digitSum_C_mul_lt (p := p) (a := a) (s := s) (t := 1)
     hp ha (by omega) hOneLt
   rw [digitSum_pow hp]
-  simpa using hOne
+  rw [digitSum_one hp] at hOne
+  exact hOne
 
 end PascalCofactors
