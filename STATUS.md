@@ -28,7 +28,15 @@ Date: **2026-10-02**
   - The Chung--Yang 2026 full theorem text remained subscription-inaccessible after renewed exact-title, DOI, PDF/manuscript, arXiv, ResearchGate, institutional, and SharedIt searches. It remains an explicit unresolved comparison.
   - No Stage-5 Lean, Palomar, paper, or arXiv work was begun.
 
-- **Stage 5 — Lean formalisation: NOT STARTED.**
+- **Stage 5 — Lean formalisation: IN PROGRESS.**
+  - Working branch: `stage5-lean`.
+  - Lean toolchain pinned to `leanprover/lean4:v4.35.0-rc2`.
+  - Formal dependency pinned to `jfairfaxball-348/Pascal-Extremes@f3a4335d17e333128b9ec16f8b0b139396e5bd94`; its manifest pins Mathlib to `bd6c1abe5f55b6c3856172d6a23703e0888f5286`.
+  - `PascalCofactors/Basic.lean` compiles in the clean GitHub Actions build.
+  - `PascalCofactors/Threshold.lean` is down to one local Nat-arithmetic proof obligation in the private `exponent_lower_identity`; the mathematical threshold statement has not been weakened.
+  - `PascalCofactors/Digits.lean` is drafted following the Stage-3 digit-block architecture but has not yet been compiler-reached because compilation still stops in `Threshold.lean`.
+  - Coefficient scaling, selected-coefficient maxima, restricted-GCD formulas, sparse endpoint, Target A, and Target C remain to be formalised.
+  - Stage 5 is not complete; no Stage-6 work has begun.
 - **Stage 6 — Palomar registration: NOT STARTED.**
 - **Stage 7 — research paper: NOT STARTED.**
 - **Stage 8 — arXiv preparation/submission: NOT STARTED.**
@@ -169,8 +177,8 @@ These computations remain regression evidence only. None is an infinite proof st
 - Stage 4 establishes a **documented final-statement literature audit**, not historical priority.
 - Stage-2 computation is finite evidence only.
 - Chung--Yang 2026 remains unresolved at theorem level.
-- No Lean, Palomar, paper, or arXiv work has begun in this repository.
+- Lean formalisation has begun and is incomplete. No Palomar, paper, or arXiv work has begun.
 
 ## Next action
 
-Run **Stage 5 only**: Lean-formalise the exact Stage-3 theorem package that Stage 4 cleared, preserving the pinned predecessor provenance and prior-work boundaries. Do not begin Palomar registration, paper drafting, or arXiv work during Stage 5.
+Continue **Stage 5 only** from `notes/session-05-handoff.md`: first finish the remaining threshold arithmetic obligation, then compiler-check the digit-sum layer before proceeding to coefficient scaling and the later GCD/extremal theorems. Do not begin Stage 6 until the full cleared Stage-4 theorem package compiles.

@@ -125,3 +125,63 @@ At inspection time the Pascal Extremes root `README.md` and `STATUS.md` reflecte
 ## 6. Novelty language
 
 Nothing in this provenance file establishes that Targets A, B, or C are new. Same-author predecessor work counts as prior work. Formalisation status and Palomar status in predecessor repositories are verification/provenance facts, not novelty evidence.
+
+
+## 7. Stage-5 formalisation dependency decision
+
+Inspection/formalisation date: **2026-10-02**.
+
+The exact predecessor pins were re-inspected before choosing a Lean dependency strategy:
+
+- `jfairfaxball-348/pascal-minus-one@5c0363d43044be94430dff489bd5c64cd153b8d5`;
+- `jfairfaxball-348/Pascal-Extremes@f3a4335d17e333128b9ec16f8b0b139396e5bd94`.
+
+Both pinned predecessor projects use Lean `v4.35.0-rc2` and Mathlib
+`bd6c1abe5f55b6c3856172d6a23703e0888f5286`.
+
+This repository now directly depends on the exact pinned Pascal Extremes commit.
+That supplies the prior-work `rP`, `G`, valuation/GCD helpers, global maximum,
+extremal-row existence, and `T` framework needed later. The dependency is pinned
+in `lakefile.toml` and `lake-manifest.json`.
+
+The exact pinned `PascalMinusOne/Scaling.lean` signature was also inspected.
+Its `scaling_valuation` removes a common `p^c` from row and modulus and is not
+the Stage-3 additive law
+[
+v_p\binom{mq}{mj}=as+v_p\binom qj.
+]
+Pascal Minus One is therefore not a Lean dependency at this checkpoint, and no
+lemma has been copied from it.
+
+New Stage-5 source surfaces include:
+
+- `PascalCofactors/Basic.lean`: `cofactor`, `cofactor_succ`,
+  `add_one_mul_cofactor`, `cofactor_eq_div`, `C`, `C_eq_div`,
+  `add_one_mul_C`;
+- `PascalCofactors/Threshold.lean`: `cofactor_pos`,
+  `cofactor_lower_block`, `cofactor_upper`, `C_lower_threshold`,
+  `C_upper_threshold`, `prime_not_dvd_C`, `rP_C`, `C_threshold_d`;
+- `PascalCofactors/Digits.lean`: drafted `digitSum`, block-splitting,
+  complement, and finite-window cofactor digit-sum lemmas.
+
+Lean uses `s` as the primary odd-degree parameter, with (d=2s+1), and defines
+the cofactor first in the positive-block form
+[
+1+(Q-1)\sum_{i<s}Q^{2i+1}.
+]
+The theorem `cofactor_eq_div` reconnects this definition to
+[
+(Q^{2s+1}+1)/(Q+1).
+]
+This is a proof-engineering representation choice, not a weakening.
+
+The latest clean build at commit
+`1d339067d0e9f5c717eb278c31e5326daf0ffe8c` compiles
+`PascalCofactors/Basic.lean` and leaves one remaining proof obligation in the
+private `exponent_lower_identity` inside `Threshold.lean`. The build therefore
+does not yet certify the threshold file or reach `Digits.lean`.
+
+All Stage-4 prior-work boundaries remain unchanged: Pascal Extremes' global
+maximum/`T_p` framework is prior work; the cubic ((2,1)) instance is prior
+work; the complementary Pascal Extremes theorem remains prior work;
+Chung--Yang 2026 remains unresolved; and formalisation is not novelty evidence.
