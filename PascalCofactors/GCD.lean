@@ -1,7 +1,11 @@
-import PascalCofactors.Scaling
-import PascalExtremes.Basic
-import Mathlib.Data.Nat.Choose.Lucas
-import Mathlib.Tactic
+module
+
+public import PascalCofactors.Scaling
+public import PascalExtremes.Basic
+public import Mathlib.Data.Nat.Choose.Lucas
+public import Mathlib.Tactic
+
+@[expose] public section
 
 namespace PascalCofactors
 

@@ -1,6 +1,10 @@
-import PascalExtremes.TargetAAttainment
-import Mathlib.Data.Nat.Digits.Lemmas
-import Mathlib.Tactic
+module
+
+public import PascalExtremes.TargetAAttainment
+public import Mathlib.Data.Nat.Digits.Lemmas
+public import Mathlib.Tactic
+
+@[expose] public section
 
 namespace PascalCofactors
 

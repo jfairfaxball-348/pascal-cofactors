@@ -1,6 +1,10 @@
-import PascalCofactors.Threshold
-import Mathlib.Data.Nat.Digits.Lemmas
-import Mathlib.Tactic
+module
+
+public import PascalCofactors.Threshold
+public import Mathlib.Data.Nat.Digits.Lemmas
+public import Mathlib.Tactic
+
+@[expose] public section
 
 namespace PascalCofactors
 

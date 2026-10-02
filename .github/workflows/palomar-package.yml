@@ -1,0 +1,105 @@
+name: Palomar package CI
+
+on:
+  push:
+    branches: [stage-6-palomar]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: palomar-package-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify-package:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Check Lean source requirements
+        run: python3 scripts/check-lean-sources.py
+      - uses: leanprover/lean-action@38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9
+        with:
+          build: false
+      - name: Regenerate and verify Lake manifest
+        run: |
+          lake update
+          git diff --exit-code -- lake-manifest.json
+      - name: Validate Git dependency pins
+        run: |
+          python3 - <<'PY'
+          import json, pathlib, re
+          data = json.loads(pathlib.Path("lake-manifest.json").read_text())
+          sha = re.compile(r"^[0-9a-f]{40}$")
+          github = re.compile(r"^https://github\.com/[^/]+/[^/?#]+(?:\.git)?$")
+          for package in data.get("packages", []):
+              if package.get("type") == "git":
+                  if not github.fullmatch(package.get("url", "")):
+                      raise SystemExit(f"invalid public GitHub dependency URL: {package.get('url')}")
+                  if not sha.fullmatch(package.get("rev", "")):
+                      raise SystemExit(f"dependency is not pinned to a full lowercase SHA: {package.get('name')}: {package.get('rev')}")
+          PY
+      - name: Fetch Mathlib cache
+        run: lake exe cache get
+      - name: Build project, Challenge, and Solution
+        run: lake build PascalCofactors Challenge Solution
+      - name: Reject substantive proof gaps and replacement axioms
+        run: |
+          if grep -R -n -E '\b(sorry|admit)\b' --include='*.lean' PascalCofactors PascalCofactors.lean; then
+            echo "substantive proof development contains sorry/admit" >&2
+            exit 1
+          fi
+          if grep -R -n -E '^[[:space:]]*axiom[[:space:]]' --include='*.lean' PascalCofactors PascalCofactors.lean; then
+            echo "substantive proof development contains an axiom declaration" >&2
+            exit 1
+          fi
+      - name: Repository packaging hygiene
+        run: |
+          test ! -f .gitmodules
+          test -z "$(git ls-files -s | awk '$1 == "160000" {print}')"
+          test -z "$(git ls-files -s | awk '$1 == "120000" {print}')"
+          test -z "$(git ls-files | grep '^\.lake/' || true)"
+          bad_artifacts="$(git ls-files | grep -E '\.(olean|ilean|a|bc|dll|dylib|o|obj|so|trace)$' || true)"
+          test -z "$bad_artifacts"
+          while IFS= read -r f; do
+            if [ "$(head -n 1 "$f" 2>/dev/null || true)" = "version https://git-lfs.github.com/spec/v1" ]; then
+              echo "Git LFS pointer detected: $f" >&2
+              exit 1
+            fi
+          done < <(git ls-files)
+          python3 - <<'PY'
+          import pathlib, re
+          accepted = re.compile(r"^(license|licence|copying|unlicense|ofl)(\.(md|markdown|txt))?$", re.I)
+          found = [p.name for p in pathlib.Path(".").iterdir() if p.is_file() and accepted.fullmatch(p.name)]
+          if found != ["LICENSE"]:
+              raise SystemExit(f"expected exactly root LICENSE, found: {found}")
+          challenge = pathlib.Path("Challenge.lean").read_bytes()
+          lines = challenge.count(b"\n") + int(bool(challenge) and not challenge.endswith(b"\n"))
+          if lines > 1000 or len(challenge) > 100 * 1024:
+              raise SystemExit(f"Challenge too large: {lines} lines, {len(challenge)} bytes")
+          print(f"Challenge size: {lines} lines, {len(challenge)} bytes")
+          if lines > 300 or len(challenge) > 32 * 1024:
+              print("warning: Challenge exceeds Palomar auditability warning threshold")
+          PY
+      - name: Install bubblewrap for local Comparator check
+        run: |
+          sudo apt-get update -qq >/dev/null
+          sudo apt-get install -y -qq bubblewrap >/dev/null
+          sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+      - name: Run toolchain lake comparator
+        run: bash scripts/verify-comparator.sh
+      - name: Report advertised theorem axioms
+        run: |
+          cat > "$RUNNER_TEMP/PalomarAxiomAudit.lean" <<'LEAN'
+          import Solution
+          #print axioms PascalCofactorsPalomar.coefficient_scaling
+          #print axioms PascalCofactorsPalomar.restricted_gcd_valuation_bounded
+          #print axioms PascalCofactorsPalomar.targetA_d
+          #print axioms PascalCofactorsPalomar.targetC
+          LEAN
+          lake env lean "$RUNNER_TEMP/PalomarAxiomAudit.lean"

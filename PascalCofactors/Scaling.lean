@@ -1,6 +1,10 @@
-import PascalCofactors.Digits
-import Mathlib.NumberTheory.Padics.PadicVal.Basic
-import Mathlib.Tactic
+module
+
+public import PascalCofactors.Digits
+public import Mathlib.NumberTheory.Padics.PadicVal.Basic
+public import Mathlib.Tactic
+
+@[expose] public section
 
 namespace PascalCofactors
 

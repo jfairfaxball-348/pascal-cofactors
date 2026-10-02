@@ -1,7 +1,11 @@
-import PascalCofactors.GCD
-import Mathlib.Data.Nat.Multiplicity
-import Mathlib.NumberTheory.Padics.PadicVal.Basic
-import Mathlib.Tactic
+module
+
+public import PascalCofactors.GCD
+public import Mathlib.Data.Nat.Multiplicity
+public import Mathlib.NumberTheory.Padics.PadicVal.Basic
+public import Mathlib.Tactic
+
+@[expose] public section
 
 namespace PascalCofactors
 

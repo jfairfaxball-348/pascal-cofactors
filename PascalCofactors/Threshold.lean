@@ -1,6 +1,10 @@
-import PascalCofactors.Basic
-import PascalExtremes.Powers
-import Mathlib.Tactic
+module
+
+public import PascalCofactors.Basic
+public import PascalExtremes.Powers
+public import Mathlib.Tactic
+
+@[expose] public section
 
 namespace PascalCofactors
 

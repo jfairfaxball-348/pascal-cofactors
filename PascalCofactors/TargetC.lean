@@ -1,5 +1,9 @@
-import PascalCofactors.TargetA
-import Mathlib.Tactic
+module
+
+public import PascalCofactors.TargetA
+public import Mathlib.Tactic
+
+@[expose] public section
 
 namespace PascalCofactors
 

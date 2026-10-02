@@ -1,6 +1,6 @@
 name = "pascal-cofactors"
 version = "0.1.0"
-defaultTargets = ["PascalCofactors"]
+defaultTargets = ["PascalCofactors", "Challenge", "Solution"]
 
 [[require]]
 name = "pascal-extremes"
@@ -9,3 +9,11 @@ rev = "f3a4335d17e333128b9ec16f8b0b139396e5bd94"
 
 [[lean_lib]]
 name = "PascalCofactors"
+
+[[lean_lib]]
+name = "Challenge"
+roots = ["Challenge"]
+
+[[lean_lib]]
+name = "Solution"
+roots = ["Solution"]

@@ -1,0 +1,202 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/main/schema/formalization.schema.json
+version: "v0.4"
+
+project:
+  name: "Pascal Cofactors"
+  description: >-
+    A Lean 4 formalisation of p-adic valuation laws for alternating cofactors
+    C_d(p^a) = (p^(ad)+1)/(p^a+1) with odd d. It proves finite-window
+    coefficient scaling and an exact pre-extremal restricted-binomial-gcd
+    formula, identifies the sparse endpoint, proves the least extremal row
+    T_p(C_d(p^a)) = p^(ad)+1 for odd d >= 5, and gives the full cubic
+    classification for p^(2a)-p^a+1. The Palomar Challenge records coefficient
+    scaling, the exact bounded gcd formula, the odd-degree least-row theorem,
+    and the cubic classification.
+  authors:
+    - name: "John Fairfax-Ball"
+      github: "jfairfaxball-348"
+  license: "Apache-2.0"
+  responsible_maintainers:
+    - "John Fairfax-Ball"
+
+classification:
+  arxiv: ["math.NT"]
+  msc2020: ["11B65"]
+
+sources:
+  - title: "Pascal Cofactors: alternating-cofactor valuation and least-row theorem package"
+    authors: ["John Fairfax-Ball"]
+    type: "original-proof"
+    relationship: "other"
+    note: >-
+      This repository is the originating mathematical source for the selected
+      family-level theorem package submitted to Palomar. The Palomar
+      original-proof category records source provenance only; it is not proof
+      of historical priority or novelty. The documented Stage-4 search through
+      2 October 2026 located no mathematically equivalent or theorem-level
+      source implying the family-level cofactor statements, while the
+      Chung--Yang 2026 full theorem remains an unresolved comparison.
+  - title: "Sharp p-adic Extrema and Least Extremal Rows for Restricted Binomial GCDs"
+    authors: ["John Fairfax-Ball"]
+    id: "arXiv:2610.01328v1"
+    type: "paper"
+    location: "https://arxiv.org/abs/2610.01328"
+    relationship: "background"
+    note: >-
+      Same-author prior work. It supplies the global maximum theorem,
+      extremal-row existence, and the rP, G, and T framework used as a direct
+      Lean dependency. Its theorem T_p(p^a+1)=p^(3a)+1 for a>=2 is prior
+      complementary-factor work and does not imply the cofactor Target C.
+  - title: "Restricted Binomial GCDs at Primes Congruent to -1"
+    authors: ["John Fairfax-Ball"]
+    id: "arXiv:2609.37754v1"
+    type: "paper"
+    location: "https://arxiv.org/abs/2609.37754"
+    relationship: "background"
+    note: >-
+      Same-author prior work inspected at the pinned predecessor commit but not
+      imported as a Lean dependency. Its scaling_valuation removes a common
+      p^c factor and is not PascalCofactors.coefficient_scaling. It also records
+      the (p,a)=(2,1), m=3, N=6 valuation phenomenon as prior work.
+  - title: "On the Greatest Common Divisor of Binomial Coefficients C(n,q), C(n,2q), C(n,3q), ..."
+    authors: ["Carl McTague"]
+    id: "DOI:10.4169/amer.math.monthly.124.4.353"
+    type: "paper"
+    location: "https://arxiv.org/abs/1510.06696"
+    relationship: "background"
+    note: >-
+      Prior work on the same fixed-multiple restricted-gcd object, including a
+      p congruent to 1 modulo m subcase and the known (p,m,N)=(2,3,6) example.
+  - title: "Computing the Greatest Common Divisor of Binomial Coefficients C(mn,mk)"
+    authors: ["Chai Wah Wu"]
+    id: "arXiv:2606.20940v2"
+    type: "paper"
+    location: "https://arxiv.org/abs/2606.20940"
+    relationship: "background"
+    note: >-
+      Defines the same fixed-multiple restricted-binomial-gcd family under
+      different prime-power-modulus hypotheses. The family itself is prior art.
+  - title: "Kummer's theorem on p-adic valuations of binomial coefficients"
+    authors: ["Ernst Eduard Kummer"]
+    type: "paper"
+    location: "https://doi.org/10.1515/crll.1852.44.93"
+    relationship: "background"
+    note: >-
+      Classical carry/borrow infrastructure; Kummer and the corresponding
+      Legendre/digit-sum machinery are not claimed as new.
+  - title: "The Greatest Common Divisor of Binomial Coefficients with Non-coprime Indices"
+    authors: ["Chan-Liang Chung", "Tse-Chung Yang"]
+    id: "DOI:10.1007/s00009-026-03202-3"
+    type: "paper"
+    location: "https://doi.org/10.1007/s00009-026-03202-3"
+    relationship: "background"
+    note: >-
+      Adjacent 2026 work. Its full theorem text remained inaccessible during
+      the Stage-4 audit, so theorem-level overlap with the present family is an
+      explicit unresolved comparison.
+
+related_formalizations:
+  - id: "https://github.com/jfairfaxball-348/Pascal-Extremes/commit/f3a4335d17e333128b9ec16f8b0b139396e5bd94"
+    relationship: "builds-on"
+    note: "Exact direct Lean dependency providing prior restricted-gcd and extremal-row infrastructure."
+  - id: "https://github.com/jfairfaxball-348/pascal-minus-one/commit/5c0363d43044be94430dff489bd5c64cd153b8d5"
+    relationship: "other"
+    note: "Inspected same-author prior work; not a Lean dependency, and its scaling theorem is different."
+
+status:
+  scope: >-
+    The repository formalises the complete Stage-4-cleared S0--S7 package:
+    corrected cofactor threshold and prime nondivisibility, finite-window digit
+    and coefficient scaling, selected-coefficient maximum and unique argmax,
+    exact pre-extremal restricted-gcd valuation and argmax set, the sparse
+    endpoint, Target A for every odd d>=5, and the full cubic Target C. The
+    Palomar Challenge selects four exact headline declarations: coefficient
+    scaling, the bounded exact gcd formula, Target A with d explicit, and the
+    full cubic classification. Deliberate Challenge proof holes are excluded
+    from proof-development counts.
+  sorry_count: 0
+  sorry_in_definitions: 0
+  axioms: ["propext", "Quot.sound", "Classical.choice"]
+  main_results:
+    - "PascalCofactors.coefficient_scaling"
+    - "PascalCofactors.restricted_gcd_valuation_bounded"
+    - "PascalCofactors.targetA_d"
+    - "PascalCofactors.targetC"
+
+automation:
+  methods:
+    - method: "agent"
+      models: ["OpenAI GPT-5.6 Sol"]
+      framework: "ChatGPT"
+      tool_setup: >-
+        Human-directed AI-assisted mathematical research, proof development,
+        Lean formalisation, debugging, literature auditing, repository
+        operations, and Palomar packaging using GitHub, GitHub Actions, Lean
+        tactics, and exact-integer computational checks.
+      cost:
+        wall_time: "multiple interactive sessions on 1-2 October 2026"
+        spend_usd: "subscription-based; exact API-equivalent spend not tracked"
+        hardware: "GitHub-hosted Linux CI and ChatGPT-hosted tool execution"
+      prompting_notes: >-
+        Prompts enforced staged theorem development, exact predecessor pins,
+        theorem-level prior-art audits, zero substantive sorry/admit, faithful
+        Challenge/Solution alignment, and predictive Palomar verification.
+  spend_usd: "subscription-based; exact API-equivalent spend not tracked"
+  notes: >-
+    The human maintainer selected the research direction, theorem scope,
+    validation standards, provenance wording, and publication decisions.
+    Finite experiments are regression evidence only and lie outside the formal
+    proof trust boundary.
+
+fidelity:
+  divergences: >-
+    No mathematical divergence is introduced between the advertised Challenge
+    declarations and the completed project theorem layer. The Challenge
+    restates the project's ordinary cofactor definition together with the
+    predecessor restricted-gcd and least-extremal-row definitions from Mathlib
+    primitives, and the Solution bridges them transparently to the proved
+    declarations. The Stage-6 module-system migration changes source visibility
+    and import packaging only; it does not change theorem statements or proof
+    content.
+
+review:
+  status: "self-assessed"
+  reviewers: ["none"]
+  notes: >-
+    The theorem package was first proved informally, audited at theorem level
+    against the located literature, and then formalised in Lean. The Stage-4
+    audit records exact known overlaps and negative-search limitations. No
+    independent human peer review is claimed. Lean verification and Palomar
+    predictive preflight are verification/provenance facts, not novelty or
+    historical-priority evidence.
+
+alignment:
+  namespace: "PascalCofactorsPalomar"
+  statements:
+    - source: "PascalCofactors.coefficient_scaling in PascalCofactors/Scaling.lean"
+      lean: "PascalCofactorsPalomar.coefficient_scaling"
+      module: "Solution"
+      status: "proved"
+      note: "Exact finite-window additive coefficient-scaling theorem."
+    - source: "PascalCofactors.restricted_gcd_valuation_bounded in PascalCofactors/GCD.lean"
+      lean: "PascalCofactorsPalomar.restricted_gcd_valuation_bounded"
+      module: "Solution"
+      status: "proved"
+      note: "Exact bounded row-by-row restricted-gcd valuation formula."
+    - source: "PascalCofactors.targetA_d in PascalCofactors/TargetA.lean"
+      lean: "PascalCofactorsPalomar.targetA_d"
+      module: "Solution"
+      status: "proved"
+      note: "Exact odd-degree d>=5 least-extremal-row theorem."
+    - source: "PascalCofactors.targetC in PascalCofactors/TargetC.lean"
+      lean: "PascalCofactorsPalomar.targetC"
+      module: "Solution"
+      status: "proved"
+      note: "Exact full cubic classification including the a=1 branch."
+
+acknowledgements: >-
+  Carl McTague and Chai Wah Wu for prior work on restricted binomial gcds;
+  Ernst Eduard Kummer for the classical valuation theorem; Chan-Liang Chung
+  and Tse-Chung Yang for adjacent 2026 work retained as an unresolved
+  comparison; Mathlib and the Pascal Extremes predecessor for formal
+  infrastructure; and Lean, Comparator, and Palomar for formal verification.

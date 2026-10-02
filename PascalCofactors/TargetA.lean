@@ -1,6 +1,10 @@
-import PascalCofactors.Endpoint
-import PascalExtremes.TargetAAttainment
-import Mathlib.Tactic
+module
+
+public import PascalCofactors.Endpoint
+public import PascalExtremes.TargetAAttainment
+public import Mathlib.Tactic
+
+@[expose] public section
 
 namespace PascalCofactors
 
