@@ -155,8 +155,9 @@ theorem restricted_gcd_valuation
       rw [coefficient_scaling
         (p := p) (a := a) (s := s) (q := q) (j := j)
         hp ha hs hq2 hqQ hj1 hjq]
-      rw [hqpow] at hjval
-      rw [hjval]
+      have hjvalQ : padicValNat p (q.choose j) = 1 := by
+        simpa [hqpow] using hjval
+      rw [hjvalQ]
     exact padicVal_G_eq_of_lower_bound_of_witness
       hmpos hrow hp hlower ⟨k, hk, hkval⟩
   · simp only [if_neg hpow, Nat.add_zero]
