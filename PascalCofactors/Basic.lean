@@ -30,7 +30,7 @@ theorem add_one_mul_cofactor
       rw [cofactor_succ]
       apply Nat.cast_injective (R := ℤ)
       have ihZ :
-          ((Q + 1 : ℕ) : ℤ) * (cofactor Q s : ℤ) =
+          ((Q : ℤ) + 1) * (cofactor Q s : ℤ) =
             (Q : ℤ) ^ (2 * s + 1) + 1 := by
         exact_mod_cast ih
       simp only [Nat.cast_mul, Nat.cast_add, Nat.cast_one, Nat.cast_pow,
