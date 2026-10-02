@@ -12,19 +12,19 @@ private theorem digitSum_add_le
     {p x y : ℕ} (hp : p.Prime) :
     digitSum p (x + y) ≤ digitSum p x + digitSum p y := by
   letI : Fact p.Prime := ⟨hp⟩
-  have hdiv : x ! * y ! ∣ (x + y) ! :=
+  have hdiv : x.factorial * y.factorial ∣ (x + y).factorial :=
     Nat.factorial_mul_factorial_dvd_factorial_add x y
   have hpow :
-      p ^ padicValNat p (x ! * y !) ∣ x ! * y ! :=
+      p ^ padicValNat p (x.factorial * y.factorial) ∣ x.factorial * y.factorial :=
     pow_padicValNat_dvd
   have hval :
-      padicValNat p (x ! * y !) ≤ padicValNat p ((x + y) !) := by
+      padicValNat p (x.factorial * y.factorial) ≤ padicValNat p ((x + y).factorial) := by
     exact
       (padicValNat_dvd_iff_le (Nat.factorial_ne_zero (x + y))).1
         (hpow.trans hdiv)
   have hmul :
-      padicValNat p (x ! * y !) =
-        padicValNat p (x !) + padicValNat p (y !) :=
+      padicValNat p (x.factorial * y.factorial) =
+        padicValNat p (x.factorial) + padicValNat p (y.factorial) :=
     padicValNat.mul (Nat.factorial_ne_zero x) (Nat.factorial_ne_zero y)
   rw [hmul] at hval
   have hscaled := Nat.mul_le_mul_left (p - 1) hval
@@ -102,7 +102,7 @@ theorem coefficient_scaling
             rw [← hBase]
       _ = (p - 1) * (a * s + padicValNat p (q.choose j)) := by
             ring
-  have hpPred : 0 < p - 1 := by omega
-  exact (Nat.mul_left_cancel_iff_of_pos hpPred).mp hMul
+  have hpPred : 0 < p - 1 := Nat.sub_pos_of_lt hp.one_lt
+  exact Nat.mul_left_cancel hpPred hMul
 
 end PascalCofactors
