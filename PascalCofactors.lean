@@ -4,3 +4,4 @@ import PascalCofactors.Digits
 
 import PascalCofactors.Scaling
 import PascalCofactors.GCD
+import PascalCofactors.Endpoint
