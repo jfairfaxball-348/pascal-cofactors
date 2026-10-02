@@ -319,3 +319,79 @@ All prior-work boundaries remain unchanged. In particular, formalisation does
 not establish novelty or historical priority, and Chung--Yang 2026 remains an
 unresolved theorem-level literature comparison.
 
+
+
+## 10. Stage-6 Palomar packaging and predictive verification
+
+Packaging date: **2026-10-02**.
+
+The current Palomar contract was re-read before packaging at these exact
+official revisions:
+
+- `PalomarRegistry/PalomarSubmission@65f0154ed776cd26c224254aa57b379137f28b0d`;
+- `PalomarRegistry/PalomarPolicy@96b034cc31a72a63d4f4041911dce337a85c9a04`;
+- `PalomarRegistry/PalomarTemplate@2891de4c48955af824969a263d31b25e7a9a1406`.
+
+The Stage-5 source tree was mechanically migrated to Lean's module system.
+Every committed regular Lean source now uses a `module` header; project
+interfaces use `public import`, and substantive project modules use
+`@[expose] public section` where legacy downstream proofs require definitional
+transparency. This is a packaging/interface migration only: no mathematical
+theorem statement or proof content was weakened or changed for Palomar.
+
+The Lean environment remains exactly:
+
+- Lean `leanprover/lean4:v4.35.0-rc2`;
+- direct Pascal Extremes dependency
+  `f3a4335d17e333128b9ec16f8b0b139396e5bd94`;
+- Mathlib `bd6c1abe5f55b6c3856172d6a23703e0888f5286`;
+- Pascal Minus One remains inspected prior work only at
+  `5c0363d43044be94430dff489bd5c64cd153b8d5`.
+
+The Palomar package uses Apache-2.0 and `formalization.yaml` v0.4. Its
+Challenge restates ordinary project definitions from Mathlib primitives and
+selects four exact headline declarations: coefficient scaling, the bounded
+pre-extremal GCD formula, explicit odd-degree Target A, and full Target C.
+`definition_names` is empty. Comparator permits only `propext`,
+`Quot.sound`, and `Classical.choice`, exactly matching the final theorem
+axiom audit.
+
+Because the pinned Pascal Extremes dependency itself contains top-level modules
+named `Challenge` and `Solution`, Palomar's ordered module-source lookup
+initially resolved the wrong Challenge. The final selected modules are therefore
+uniquely named `PascalCofactorsChallenge` and `PascalCofactorsSolution`.
+The requested root `Challenge.lean` and `Solution.lean` copies are retained,
+but Comparator selects the unique modules. The passing report confirms the
+trusted Challenge path is the repository-root
+`PascalCofactorsChallenge.lean`, with direct import `Mathlib`, trust level
+`high`, and no untrusted source closure.
+
+Immutable predictive-verification candidate:
+
+`db0428e43802bf598582295ffd9358f78a5221e7`.
+
+Repository verification:
+
+- ordinary Lean CI run `37021877727`, job `110886714877`: success;
+- package CI run `37021879105`, job `110886718705`: success;
+- full Palomar predictive run `37021879910`, verify job `110886765551`:
+  `status: pass`, `stage: complete`, no warnings and no errors.
+
+The protected Comparator replay accepted all four declarations; con-ron accepted
+12,538 declarations, NanoDa accepted the solution, and Lean's default kernel
+accepted the solution. The predictive report records Mathlib as the only trusted
+Challenge dependency.
+
+These are verification and provenance facts only. The Palomar
+`original-proof` source category in `formalization.yaml` records that this
+repository is the originating source for the selected theorem package under
+Palomar's metadata contract; it is not evidence of historical priority or
+novelty. All Stage-4 boundaries remain binding: the fixed-multiple GCD family,
+Kummer/Legendre machinery, Pascal Extremes global extremal framework and
+complementary theorem, Pascal Minus One common-`p^c` scaling, and the
+((2,1),m=3,N=6) instance remain prior work, while Chung--Yang 2026 remains an
+unresolved theorem-level comparison.
+
+No real Palomar submission or registration was performed by the assistant.
+No Palomar ID or version is recorded. Registration remains a human-maintainer
+gate.
