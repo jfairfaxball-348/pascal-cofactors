@@ -49,8 +49,8 @@ theorem digitSum_of_lt
 
 @[simp] theorem digitSum_pow {p a : ℕ} (hp : p.Prime) : digitSum p (p ^ a) = 1 := by
   calc
-    digitSum p (p ^ a) = digitSum p 1 :=
-      digitSum_pow_mul (p := p) (a := a) (y := 1) hp
+    digitSum p (p ^ a) = digitSum p 1 := by
+      simpa using (digitSum_pow_mul (p := p) (a := a) (y := 1) hp)
     _ = 1 := digitSum_one hp
 
 private theorem complement_decomp
@@ -117,17 +117,33 @@ theorem digitSum_complement
             (p := p) (a := 1) (x := p - 1 - u % p)
             (y := p ^ a - 1 - u / p) hp (by simpa using hlowDigit))
       rw [hsplitComp]
-      have hsplitU :
-          digitSum p u = digitSum p (u % p) + digitSum p (u / p) := by
-        rw [huDecomp]
+      have hsplitU0 :
+          digitSum p (u % p + p * (u / p)) =
+            digitSum p (u % p) + digitSum p (u / p) := by
         simpa using
           (digitSum_add_pow_mul
             (p := p) (a := 1) (x := u % p) (y := u / p) hp
             (by simpa using hr))
-      rw [hsplitU, digitSum_of_lt hp hlowDigit, digitSum_of_lt hp hr]
+      have hsplitU :
+          digitSum p u = digitSum p (u % p) + digitSum p (u / p) := by
+        calc
+          digitSum p u =
+              digitSum p (u % p + p * (u / p)) := congrArg (digitSum p) huDecomp
+          _ = digitSum p (u % p) + digitSum p (u / p) := hsplitU0
+      rw [hsplitU]
+      have hlowDS :
+          digitSum p (p - 1 - u % p) = p - 1 - u % p :=
+        digitSum_of_lt hp hlowDigit
+      have hrDS : digitSum p (u % p) = u % p :=
+        digitSum_of_lt hp hr
+      rw [hlowDS, hrDS]
       have hih := ih hv
       have hrle : u % p ≤ p - 1 := by omega
       have hlow : (p - 1 - u % p) + u % p = p - 1 := Nat.sub_add_cancel hrle
+      have hSucc :
+          (a + 1) * (p - 1) = a * (p - 1) + (p - 1) := by
+        ring
+      rw [hSucc]
       omega
 
 theorem cofactor_le_pow_even
@@ -235,6 +251,7 @@ theorem digitSum_C_mul
   have hOneLt : (1 : ℕ) < p ^ a := by omega
   have hOne := digitSum_C_mul_lt (p := p) (a := a) (s := s) (t := 1)
     hp ha (by omega) hOneLt
-  simpa [digitSum_one hp] using hOne
+  rw [digitSum_pow hp]
+  simpa using hOne
 
 end PascalCofactors
