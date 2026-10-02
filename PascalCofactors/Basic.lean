@@ -27,7 +27,7 @@ theorem add_one_mul_cofactor
   | zero =>
       simp [cofactor]
   | succ s ih =>
-      rw [show Nat.succ s = s + 1 by omega, cofactor_succ]
+      rw [cofactor_succ]
       apply Nat.cast_injective (R := ℤ)
       have ihZ :
           ((Q + 1 : ℕ) : ℤ) * (cofactor Q s : ℤ) =
@@ -43,8 +43,9 @@ theorem add_one_mul_cofactor
 theorem cofactor_eq_div
     {Q s : ℕ} (hQ : 1 ≤ Q) :
     cofactor Q s = (Q ^ (2 * s + 1) + 1) / (Q + 1) := by
-  refine (Nat.div_eq_of_eq_mul_left (by omega : 0 < Q + 1) ?_).symm
-  simpa [Nat.mul_comm] using add_one_mul_cofactor (Q := Q) (s := s) hQ
+  symm
+  apply Nat.div_eq_of_eq_mul_left (by omega : 0 < Q + 1)
+  simpa [Nat.mul_comm] using (add_one_mul_cofactor (Q := Q) (s := s) hQ).symm
 
 /-- Specialization to the project prime-power notation. -/
 def C (p a s : ℕ) : ℕ :=
