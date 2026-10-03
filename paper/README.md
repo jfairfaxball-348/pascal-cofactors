@@ -8,13 +8,15 @@ Author: John Fairfax-Ball.
 
 ## Files
 
-- `main.tex` — complete standalone article source.
+- `main.tex` — complete standalone article source, including three LaTeX-native TikZ figures (proof roadmap, digit-block schematic, and a concrete valuation profile).
 - `references.bib` — bibliography.
 - `.github/workflows/paper.yml` — reproducible manuscript build and PDF preflight.
 
+No external figure assets are required; all figures are generated directly from the LaTeX source.
+
 ## Build
 
-From this directory, with a standard TeX Live installation:
+From this directory, with a standard TeX Live installation including PGF/TikZ (provided by `texlive-latex-extra` in the repository workflow):
 
 ```sh
 latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
