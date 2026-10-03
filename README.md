@@ -28,11 +28,17 @@ C_d(Q)=\frac{Q^d+1}{Q+1}
 
 ## Current stage
 
-**Stage 6 — Palomar packaging and predictive preflight: COMPLETE; PALOMAR REGISTRATION PENDING (2026-10-02).**
+**Stage 7 — research paper: IN PROGRESS (2026-10-03).**
 
-Stages 1–5 are complete. The Stage-4-cleared theorem package S0–S7 has been formalised in Lean, and the Palomar package and full predictive preflight were completed successfully for candidate commit `db0428e43802bf598582295ffd9358f78a5221e7`.
+Stages 1–6 are complete. The theorem package is formalised in Lean and is
+registered in Palomar as `PALOMAR-2026-10-02-000014` version 1, with registered
+source commit `02a52e71a0a5ab1e77824490d0c47650d4a45691` and trust level
+`high`.
 
-The human maintainer submitted that candidate to Palomar on 2 October 2026. Mechanical verification passed, but the automated editorial review requested correction of stale current-stage documentation before registration could be offered. **Palomar registration has not occurred, and no Palomar registry ID is claimed.**
+Stage 7 is writing the research paper from the proved, audited, formalised, and
+registered theorem set. Registration is verification/provenance evidence only;
+it is not used as evidence of novelty or historical priority. Stage 8 arXiv
+preparation/submission has not begun.
 
 See:
 
@@ -40,6 +46,7 @@ See:
 - `AGENTS.md` for the required workflow and research standards;
 - `notes/stage5-formalisation.md` for the completed Lean formalisation;
 - `notes/palomar-packaging-6.md` for the completed Palomar package and predictive-preflight record;
+- `notes/palomar-registration-6.md` for the public registration record;
 - `notes/provenance.md` and `notes/prior-art-audit-4.md` for the binding provenance and literature boundaries.
 
 ## Research discipline
