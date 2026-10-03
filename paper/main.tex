@@ -9,7 +9,7 @@
 \usepackage[a4paper,margin=30mm]{geometry}
 \usepackage{booktabs}
 \usepackage{tikz}
-\usetikzlibrary{arrows.meta,positioning,decorations.pathreplacing}
+\usetikzlibrary{arrows.meta,positioning,calc,decorations.pathreplacing}
 
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{proposition}[theorem]{Proposition}
@@ -219,17 +219,21 @@ calculation.
   \(v_p\binom{mq}{mj}=as+v_p\binom qj\)};
 \node[box,below=of scaling] (gcdwindow) {Exact pre-endpoint restricted GCD\\
   baseline \(as\), with a \(+1\) bump at powers of \(p\)};
-\node[box,below=10mm of endpoint] (mainA) {Odd \(d\ge5\) least row\\
+\coordinate (branchmid) at ($(endpoint.south)!0.5!(gcdwindow.south)$);
+\node[box,text width=0.34\linewidth] (compare)
+  at ($(branchmid)+(0,-14mm)$) {Compare the pre-endpoint maximum\\
+  with the extremal threshold};
+\node[box,below left=8mm and 9mm of compare] (mainA) {Odd \(d\ge5\) least row\\
   \(T_p(C_d(p^a))=p^{ad}+1\)};
-\node[box,below=of gcdwindow] (cubic) {Cubic classification\\
+\node[box,below right=8mm and 9mm of compare] (cubic) {Cubic classification\\
   \(a=1\) early attainment; \(a\ge2\) sparse endpoint};
 \draw[arrow] (threshold) -- (endpoint);
 \draw[arrow] (digits) -- (scaling);
 \draw[arrow] (scaling) -- (gcdwindow);
-\draw[arrow] (endpoint) -- (mainA);
-\draw[arrow] (gcdwindow) -- (mainA);
-\draw[arrow] (endpoint) -- (cubic);
-\draw[arrow] (gcdwindow) -- (cubic);
+\draw[arrow] (endpoint) -- (compare);
+\draw[arrow] (gcdwindow) -- (compare);
+\draw[arrow] (compare) -- (mainA);
+\draw[arrow] (compare) -- (cubic);
 \end{tikzpicture}
 \caption{Proof roadmap.  The finite-window branch transports an ordinary
 binomial-row valuation pattern to the cofactor-restricted rows, while the
