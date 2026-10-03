@@ -8,6 +8,8 @@
 \usepackage{enumitem}
 \usepackage[a4paper,margin=30mm]{geometry}
 \usepackage{booktabs}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,decorations.pathreplacing}
 
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{proposition}[theorem]{Proposition}
@@ -196,6 +198,45 @@ Section~\ref{sec:least} proves the least-row theorems, and
 Section~\ref{sec:examples} gives illustrative cases.  The literature and
 formal-verification boundaries are recorded in
 Sections~\ref{sec:related} and \ref{sec:formal}.
+Figure~\ref{fig:roadmap} gives the proof architecture at a glance; the two
+main branches are the finite digit window and the separate sparse-endpoint
+calculation.
+
+\begin{figure}[tbp]
+\centering
+\begin{tikzpicture}[
+  node distance=5mm and 9mm,
+  box/.style={draw,rounded corners=2pt,align=center,inner sep=5pt,text width=0.39\linewidth,font=\small},
+  arrow/.style={-{Latex[length=2mm]},thick}
+]
+\node[box] (threshold) {Threshold and coprimality\\
+  \(p^{a(d-1)-1}<m<p^{a(d-1)}\), \(r_p(m)=2as\)};
+\node[box,right=of threshold] (digits) {Digit-sum shift\\
+  \(s_p(mt)=s_p(t)+as(p-1)\), \(1\le t\le Q\)};
+\node[box,below=of threshold] (endpoint) {Sparse endpoint\\
+  \(m(Q+1)=Q^d+1\), \(v_p(G(m(Q+1);m))=2as\)};
+\node[box,below=of digits] (scaling) {Coefficient scaling\\
+  \(v_p\binom{mq}{mj}=as+v_p\binom qj\)};
+\node[box,below=of scaling] (gcdwindow) {Exact pre-endpoint restricted GCD\\
+  baseline \(as\), with a \(+1\) bump at powers of \(p\)};
+\node[box,below=10mm of endpoint] (mainA) {Odd \(d\ge5\) least row\\
+  \(T_p(C_d(p^a))=p^{ad}+1\)};
+\node[box,below=of gcdwindow] (cubic) {Cubic classification\\
+  \(a=1\) early attainment; \(a\ge2\) sparse endpoint};
+\draw[arrow] (threshold) -- (endpoint);
+\draw[arrow] (digits) -- (scaling);
+\draw[arrow] (scaling) -- (gcdwindow);
+\draw[arrow] (endpoint) -- (mainA);
+\draw[arrow] (gcdwindow) -- (mainA);
+\draw[arrow] (endpoint) -- (cubic);
+\draw[arrow] (gcdwindow) -- (cubic);
+\end{tikzpicture}
+\caption{Proof roadmap.  The finite-window branch transports an ordinary
+binomial-row valuation pattern to the cofactor-restricted rows, while the
+endpoint branch reaches the global threshold through the sparse row
+\(Q^d+1\).  Comparing the two branches gives the least-row results.}
+\label{fig:roadmap}
+\end{figure}
 
 \section{Restricted GCDs and the extremal framework}\label{sec:setup}
 
@@ -399,6 +440,49 @@ Its base-\(p\) digit sum is \(1+sa(p-1)\), while \(s_p(Q)=1\).
 The endpoint \(t=Q\) is included in the same identity, but the later binomial
 scaling theorem only uses triples \(j,q-j,q\) lying in \([1,Q]\); this is why
 the multiplier range terminates at \(q=Q\).
+
+For \(1\le t<Q\), Figure~\ref{fig:digit-blocks} displays the normalised
+base-\(Q\) expansion in \eqref{eq:baseQ}.  It isolates the repeated
+complementary pair responsible for the constant digit-sum shift.
+
+\begin{figure}[tbp]
+\centering
+\begin{tikzpicture}[
+  block/.style={draw,minimum width=16mm,minimum height=9mm,align=center,font=\small},
+  note/.style={font=\small,align=center}
+]
+\node[note] at (0,1.0) {low-order \(\longrightarrow\) high-order base-\(Q\) blocks};
+\node[block] (b0) at (-6.0,0) {\(t\)};
+\node[block] (b1) at (-4.4,0) {\(Q-t\)};
+\node[block] (b2) at (-2.8,0) {\(t-1\)};
+\node[block] (b3) at (-1.2,0) {\(Q-t\)};
+\node[block] (b4) at (0.4,0) {\(t-1\)};
+\node at (2.0,0) {\(\cdots\)};
+\node[block] (b5) at (3.6,0) {\(Q-t\)};
+\node[block] (b6) at (5.2,0) {\(t-1\)};
+\node[note,below=2mm of b0] {\(Q^0\)};
+\node[note,below=2mm of b1] {\(Q^1\)};
+\node[note,below=2mm of b2] {\(Q^2\)};
+\node[note,below=2mm of b3] {\(Q^3\)};
+\node[note,below=2mm of b4] {\(Q^4\)};
+\node[note,below=2mm of b5] {\(Q^{2s-1}\)};
+\node[note,below=2mm of b6] {\(Q^{2s}\)};
+\draw[decorate,decoration={brace,mirror,amplitude=4pt}]
+  ([yshift=-11mm]b1.south west) -- ([yshift=-11mm]b2.south east)
+  node[midway,below=5pt,note] {\(s_p(Q-t)+s_p(t-1)=a(p-1)\)};
+\draw[decorate,decoration={brace,mirror,amplitude=4pt}]
+  ([yshift=-11mm]b5.south west) -- ([yshift=-11mm]b6.south east)
+  node[midway,below=5pt,note] {same contribution};
+\node[note] at (0,-2.2) {Each base-\(Q\) block occupies exactly \(a\)
+base-\(p\) digit positions because \(Q=p^a\).};
+\end{tikzpicture}
+\caption{Base-\(Q\) block structure of \(mt\) for \(1\le t<Q\).
+The complementary pairs \((Q-t,t-1)\) each contribute the constant
+\(a(p-1)\) to the base-\(p\) digit sum, leaving the initial block \(t\)
+unchanged.  This is the mechanism behind
+\(s_p(mt)=s_p(t)+as(p-1)\).}
+\label{fig:digit-blocks}
+\end{figure}
 
 \section{Coefficient scaling in the pre-endpoint window}\label{sec:scaling}
 
@@ -810,6 +894,46 @@ extremal restricted GCD occurs at
   q=10,\qquad N=730=3^6+1.
 \]
 \end{example}
+
+Figure~\ref{fig:valuation-profile} plots the complete restricted-GCD valuation
+profile for this example.  It separates the baseline, the two power-of-\(3\)
+bumps inside the scaling window, and the endpoint jump to the extremal
+threshold.
+
+\begin{figure}[tbp]
+\centering
+\begin{tikzpicture}[x=1.08cm,y=1.08cm,font=\small]
+\draw[->] (1.5,1.45) -- (10.7,1.45) node[right] {\(q\)};
+\draw[->] (1.5,1.45) -- (1.5,4.45)
+  node[above,align=center] {\(v_3(G(73q;73))\)};
+\foreach \x in {2,...,10} {
+  \draw (\x,1.39) -- (\x,1.51);
+  \node[below] at (\x,1.36) {\(\x\)};
+}
+\foreach \y in {2,3,4} {
+  \draw (1.44,\y) -- (1.56,\y);
+  \node[left] at (1.40,\y) {\(\y\)};
+}
+\draw[dashed] (1.75,2) -- (10.25,2);
+\node[anchor=south west] at (1.8,2.02) {baseline \(as=2\)};
+\draw[dashed] (1.75,4) -- (10.25,4);
+\node[anchor=south west] at (1.8,4.02) {threshold \(r_3(73)=4\)};
+\foreach \x/\y in {2/2,3/3,4/2,5/2,6/2,7/2,8/2,9/3} {
+  \draw (\x,1.45) -- (\x,\y);
+  \fill (\x,\y) circle (2.1pt);
+}
+\draw (10,1.45) -- (10,4);
+\draw[fill=white] (9.92,3.92) rectangle (10.08,4.08);
+\node[above] at (3,3.05) {\(3\)};
+\node[above] at (9,3.05) {\(3^2\)};
+\node[above right] at (10.02,3.82) {endpoint};
+\end{tikzpicture}
+\caption{Restricted-GCD valuations for \(p=3\), \(a=2\), \(d=3\),
+so \(Q=9\) and \(m=73\).  For \(2\le q\le9\) the baseline is \(2\),
+with a \(+1\) bump exactly at \(q=3,9\).  The separate endpoint
+\(q=10=Q+1\) reaches the extremal threshold \(4\).}
+\label{fig:valuation-profile}
+\end{figure}
 
 \begin{example}[The exponent-one cubic branch]
 Take \(p=3\), \(a=1\).  Then
