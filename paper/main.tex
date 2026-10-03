@@ -223,9 +223,9 @@ calculation.
 \node[box,text width=0.34\linewidth] (compare)
   at ($(branchmid)+(0,-14mm)$) {Compare the pre-endpoint maximum\\
   with the extremal threshold};
-\node[box,below left=8mm and 9mm of compare] (mainA) {Odd \(d\ge5\) least row\\
+\node[box] (mainA) at ($(compare)+(-3.35cm,-18mm)$) {Odd \(d\ge5\) least row\\
   \(T_p(C_d(p^a))=p^{ad}+1\)};
-\node[box,below right=8mm and 9mm of compare] (cubic) {Cubic classification\\
+\node[box] (cubic) at ($(compare)+(3.35cm,-18mm)$) {Cubic classification\\
   \(a=1\) early attainment; \(a\ge2\) sparse endpoint};
 \draw[arrow] (threshold) -- (endpoint);
 \draw[arrow] (digits) -- (scaling);
