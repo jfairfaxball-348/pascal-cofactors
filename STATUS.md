@@ -57,7 +57,7 @@ Date: **2026-10-03**
   - Revised generated PDF: 15 A4 pages, PDF 1.5, 353386 bytes, with title/author metadata set.
   - Revised paper artifact: `pascal-cofactors-paper`, artifact ID `11276188278`, upload digest `sha256:1283c40ecd311cbb42132a7353e9a4db5249a30e22406193750456517fc6e7e9`.
   - Targeted 160-dpi rendered inspection of all three figures found no clipped text or overlaps after a final spacing correction to the digit-block schematic.
-  - Revised Lean regression run `37129883029`, job `111222716880`, also passed at the same paper-content checkpoint, including the proof-gap check.
+  - The repository's existing always-on Lean workflow also ran automatically on the paper-only push and passed (`37129883029`, job `111222716880`); this was incidental CI rather than a requirement of the readability revision.
   - Compared with the pre-revision Stage-7 branch head `0505965eb0f3ee8b4197eb3d1be2149ebc76a013`, the readability revision changes only `paper/main.tex` and `paper/README.md`; no Lean theorem or proof source changed.
   - Original completion handoff: `notes/session-09-handoff.md`; readability-revision handoff: `notes/session-10-handoff.md`.
 - **Stage 8 — arXiv preparation/submission: NOT STARTED.**
@@ -201,7 +201,7 @@ These computations remain regression evidence only. None is an infinite proof st
 - Lean formalisation is clean through the complete Stage-4-cleared S0–S7 package.
 - Palomar packaging and full predictive preflight passed; the human maintainer subsequently completed Palomar registration as `PALOMAR-2026-10-02-000014` v1 at source commit `02a52e71a0a5ab1e77824490d0c47650d4a45691`.
 - Palomar registration is verification/provenance evidence, not novelty or historical-priority evidence.
-- Stage 7 paper drafting and the limited explanatory-figure readability revision are complete; revised paper CI, Lean regression, and targeted figure inspection all pass. Stage 8 arXiv preparation has not begun.
+- Stage 7 paper drafting and the limited explanatory-figure readability revision are complete; the revised paper build and targeted figure inspection pass. The theorem/Lean and Palomar layers were not changed or reopened. Stage 8 arXiv preparation has not begun.
 
 ## Next action
 
