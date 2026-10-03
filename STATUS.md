@@ -1,6 +1,6 @@
 # Project status
 
-Date: **2026-10-02**
+Date: **2026-10-03**
 
 ## Stage gates
 
@@ -47,7 +47,17 @@ Date: **2026-10-02**
   - The registered Challenge records coefficient scaling, the exact bounded restricted-GCD formula, the odd-degree least-row theorem, and the cubic classification.
   - Detailed packaging record: `notes/palomar-packaging-6.md`.
   - Registration record: `notes/palomar-registration-6.md`.
-- **Stage 7 — research paper: IN PROGRESS.**
+- **Stage 7 — research paper: COMPLETE. Gate: PROCEED.**
+  - Working branch: `stage7-paper`.
+  - Final paper-content checkpoint: `dd2ae2c148e4c8f736ae7e9880181217931447f3`.
+  - Standalone manuscript: `paper/main.tex`; bibliography: `paper/references.bib`; build notes: `paper/README.md`.
+  - Paper CI run `37105302866`, job `111152508881`, passed the LaTeX build, citation/reference checks, overfull-box/PDF-bookmark checks, PDF metadata/text inspection, and artifact upload.
+  - Final generated PDF: 13 A4 pages, PDF 1.5, 333695 bytes, with title/author metadata set.
+  - Paper artifact: `pascal-cofactors-paper`, artifact ID `11267592824`, digest `sha256:97b566792155df5af005485b88a5c11e2a10bff8940e994b5c690016d7e7e63a`.
+  - Rendered-page inspection found no clipped text, overlaps, broken glyphs, or malformed table/bibliography layout.
+  - Lean regression run `37105302860`, job `111152546692`, also passed at the same checkpoint.
+  - Compared with the registered source commit `02a52e71a0a5ab1e77824490d0c47650d4a45691`, Stage 7 changes only paper/documentation and paper-CI files; no Lean theorem or proof source changed.
+  - Detailed completion handoff: `notes/session-09-handoff.md`.
 - **Stage 8 — arXiv preparation/submission: NOT STARTED.**
 
 ## Mathematical claim status
@@ -189,12 +199,13 @@ These computations remain regression evidence only. None is an infinite proof st
 - Lean formalisation is clean through the complete Stage-4-cleared S0–S7 package.
 - Palomar packaging and full predictive preflight passed; the human maintainer subsequently completed Palomar registration as `PALOMAR-2026-10-02-000014` v1 at source commit `02a52e71a0a5ab1e77824490d0c47650d4a45691`.
 - Palomar registration is verification/provenance evidence, not novelty or historical-priority evidence.
-- Stage 7 paper drafting is now in progress; Stage 8 arXiv preparation has not begun.
+- Stage 7 paper drafting, build preflight, and visual PDF inspection are complete; Stage 8 arXiv preparation has not begun.
 
 ## Next action
 
-**Stage 7 only:** write and internally check the research paper against the
-registered theorem package, the Stage-3 proof, the Stage-4 literature audit,
-and the Stage-5 Lean formalisation. Preserve the registration metadata and all
-prior-work caveats. Do not begin Stage 8 arXiv preparation/submission until the
-paper stage is completed, committed, and handed off.
+**Stage 8 only:** prepare the completed Stage-7 manuscript for arXiv from the
+validated paper checkpoint and Stage-7 handoff. Perform an arXiv-specific
+source-package and metadata preflight, preserving the exact theorem scope,
+Palomar provenance, predecessor attributions, and the unresolved Chung--Yang
+2026 caveat. Do not revise mathematical claims merely for packaging, and do
+not treat arXiv posting as evidence of novelty or priority.
