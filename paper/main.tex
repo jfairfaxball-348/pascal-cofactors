@@ -1,0 +1,970 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+\usepackage[a4paper,margin=30mm]{geometry}
+\usepackage{booktabs}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\vp}{v_p}
+\newcommand{\G}{G}
+\newcommand{\Tp}{T_p}
+\newcommand{\rp}{r_p}
+\newcommand{\spdigit}{s_p}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Cd}{C_d}
+
+\title{Pascal Cofactors: Least Extremal Rows for Alternating Cofactors of Prime Powers}
+\author{John Fairfax-Ball}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+For integers \(m\ge2\) and \(N>m\) with \(m\mid N\), define the restricted
+binomial greatest common divisor
+\[
+  G(N;m)=\gcd\left\{\binom Nk:0<k<N,\ m\mid k\right\}.
+\]
+Fix a prime \(p\nmid m\), and let \(r_p(m)\) be the least positive \(r\) with
+\(m<p^r\). Earlier work proves that \(r_p(m)\) is the global maximum of
+\(v_p(G(N;m))\) over admissible rows and defines the least row \(T_p(m)\)
+attaining it.
+
+We study the alternating cofactors
+\[
+  C_d(p^a)=\frac{p^{ad}+1}{p^a+1},
+  \qquad a\ge1,\quad d\ge3\text{ odd}.
+\]
+Writing \(Q=p^a\) and \(d=2s+1\), the central identity is the finite-window
+scaling law
+\[
+  v_p\binom{C_d(Q)q}{C_d(Q)j}
+  =as+v_p\binom qj
+  \qquad(2\le q\le Q,\ 1\le j<q).
+\]
+It yields an exact pre-extremal restricted-GCD formula:
+\[
+  v_p(G(C_d(Q)q;C_d(Q)))
+  =
+  as+
+  \begin{cases}
+    1,&q\text{ is a positive power of }p,\\
+    0,&\text{otherwise},
+  \end{cases}
+\]
+for \(2\le q\le Q\).  A separate calculation at the sparse endpoint
+\(q=Q+1\) gives valuation \(a(d-1)=r_p(C_d(Q))\).  Consequently, for every
+odd \(d\ge5\),
+\[
+  T_p(C_d(p^a))=p^{ad}+1.
+\]
+For the cubic cofactor \(p^{2a}-p^a+1\), the exponent-one case behaves
+differently:
+\[
+  T_p(p^{2a}-p^a+1)=
+  \begin{cases}
+    p(p^2-p+1),&a=1,\\
+    p^{3a}+1,&a\ge2.
+  \end{cases}
+\]
+The full theorem package has been formalised in Lean 4 and registered in the
+Palomar registry.  The restricted-GCD family, Kummer's theorem, and the global
+extremal framework are prior work; the paper records the relevant literature
+boundaries explicitly.
+\end{abstract}
+
+\medskip
+\noindent\textbf{2020 Mathematics Subject Classification.} 11B65.
+
+\noindent\textbf{Keywords.} binomial coefficients; greatest common divisor;
+\(p\)-adic valuation; Kummer's theorem; Pascal triangle; Lean.
+
+\section{Introduction}\label{sec:intro}
+
+Divisibility in Pascal's triangle is governed locally by the base-\(p\)
+arithmetic of the upper and lower indices.  Kummer's theorem identifies
+\(v_p\binom nk\) with a carry count in base \(p\), while Legendre's formula
+gives the equivalent digit-sum expression
+\[
+  v_p\binom nk
+  =
+  \frac{s_p(k)+s_p(n-k)-s_p(n)}{p-1}.
+\]
+These classical descriptions are especially effective when the selected lower
+indices have a rigid arithmetic shape.
+
+We consider a fixed divisibility restriction.  For \(m\ge2\) and \(N>m\)
+with \(m\mid N\), let
+\[
+  G(N;m)=\gcd\left\{\binom Nk:0<k<N,\ m\mid k\right\}.
+\]
+Writing \(N=mq\), this is the same fixed-multiple family denoted \(g(m,q)\)
+by Wu \cite{Wu2026}; the family itself is therefore not new.  McTague studied
+the same selector under congruence hypotheses on the valuation prime
+\cite{McTague2017}.  Other work studies related but different restrictions,
+including coprime, non-coprime, and \(\gcd(N,k)=d\) selectors
+\cite{Hong2016,ChiuYuanZhou2023,ChungYangZhou2025,ChungYang2026}.
+
+The row-extremal framework used here comes from the author's preceding work
+\cite{FairfaxBallExtremes2026}.  For a prime \(p\nmid m\), put
+\[
+  r_p(m)=\min\{r\ge1:m<p^r\}.
+\]
+The predecessor theorem states that the largest possible value of
+\(v_p(G(N;m))\), over all admissible rows \(N\), is exactly \(r_p(m)\), and
+that an extremal row exists.  Only after this existence result is in place does
+one define the least extremal row
+\[
+  T_p(m)=
+  \min\{N>m:m\mid N,\ v_p(G(N;m))=r_p(m)\}.
+\]
+
+This paper studies \(T_p(m)\) when \(m\) is the alternating cofactor in
+\[
+  Q^d+1=(Q+1)C_d(Q),
+  \qquad
+  C_d(Q)=\frac{Q^d+1}{Q+1},
+\]
+where \(Q=p^a\) and \(d\ge3\) is odd.  Thus
+\[
+  C_d(Q)=Q^{d-1}-Q^{d-2}+\cdots-Q+1.
+\]
+For \(d=3\), the two factors are
+\[
+  Q+1,\qquad Q^2-Q+1=\Phi_6(Q),
+\]
+and the predecessor paper determines the least extremal row for the first
+factor when \(a\ge2\):
+\[
+  T_p(Q+1)=Q^3+1.
+\]
+The cubic result below gives the complementary statement for the second factor,
+but it is not a formal consequence of the factorisation.  Minimality for one
+restriction modulus does not transfer to the complementary factor.
+
+The proof is driven by a finite-window digit identity.  If \(d=2s+1\) and
+\(m=C_d(Q)\), then for every \(1\le t\le Q\),
+\[
+  s_p(mt)=s_p(t)+as(p-1).
+\]
+Substituting this in Legendre's digit-sum formula gives the exact coefficient
+scaling
+\[
+  v_p\binom{mq}{mj}
+  =
+  as+v_p\binom qj
+  \qquad(2\le q\le Q,\ 1\le j<q).
+\]
+Minimising over \(j\) gives a complete row-by-row formula for the restricted
+GCD before the sparse endpoint.  The endpoint \(q=Q+1\) lies just outside the
+scaling window and is handled separately using the special row
+\(Q^d+1=p^{ad}+1\).
+
+The resulting picture has a useful dichotomy.  For every odd \(d\ge5\), all
+multipliers \(2\le q\le Q\) remain strictly below the global extremal threshold
+and \(q=Q+1\) is the first extremal multiplier.  In the cubic case \(d=3\),
+the same conclusion holds for \(a\ge2\), but when \(a=1\) the multiplier
+\(q=p\) already reaches the threshold.  This produces the complete cubic
+classification stated in the abstract.
+
+The paper is organised as follows.  Section~\ref{sec:setup} records the
+restricted-GCD and extremal framework.  Section~\ref{sec:threshold} determines
+the exact threshold for the cofactor family.  Sections~\ref{sec:digits} and
+\ref{sec:scaling} prove the digit-sum and coefficient-scaling laws.
+Section~\ref{sec:gcdwindow} derives the exact pre-extremal GCD formula.
+Section~\ref{sec:endpoint} treats the sparse endpoint.
+Section~\ref{sec:least} proves the least-row theorems, and
+Section~\ref{sec:examples} gives illustrative cases.  The literature and
+formal-verification boundaries are recorded in
+Sections~\ref{sec:related} and \ref{sec:formal}.
+
+\section{Restricted GCDs and the extremal framework}\label{sec:setup}
+
+Throughout, \(p\) is prime.  For a positive integer \(n\), \(v_p(n)\) denotes
+the exponent of \(p\) in \(n\), and \(s_p(n)\) denotes the sum of the base-\(p\)
+digits of \(n\).
+
+\begin{definition}
+For integers \(m\ge2\) and \(N>m\) with \(m\mid N\), define
+\[
+  G(N;m)=\gcd\left\{\binom Nk:0<k<N,\ m\mid k\right\}.
+\]
+For prime \(p\nmid m\), define
+\[
+  r_p(m)=\min\{r\ge1:m<p^r\}.
+\]
+\end{definition}
+
+If \(N=mq\) with \(q\ge2\), the selected lower indices are precisely
+\(m,2m,\ldots,(q-1)m\).  Therefore
+\begin{equation}\label{eq:gcd-min}
+  v_p(G(mq;m))
+  =
+  \min_{1\le j<q}v_p\binom{mq}{mj}.
+\end{equation}
+
+We use Kummer's theorem and its digit-sum reformulation
+\cite{Kummer1852,Granville1997}:
+\begin{equation}\label{eq:kummer-digit}
+  v_p\binom nk
+  =
+  \frac{s_p(k)+s_p(n-k)-s_p(n)}{p-1}.
+\end{equation}
+
+The following theorem is prior work and supplies the global meaning of the
+threshold \(r_p(m)\).
+
+\begin{theorem}[Global extremal theorem, \cite{FairfaxBallExtremes2026}]
+\label{thm:prior-global}
+Let \(p\) be prime and \(m\ge2\) with \(p\nmid m\).  Then
+\[
+  \max_{\substack{N>m\\m\mid N}}v_p(G(N;m))=r_p(m).
+\]
+Moreover the extremal set is nonempty, so the least extremal row
+\[
+  T_p(m)=
+  \min\{N>m:m\mid N,\ v_p(G(N;m))=r_p(m)\}
+\]
+is well defined.
+\end{theorem}
+
+Our task is therefore not to reprove the global maximum, but to identify the
+first row attaining it for the cofactor family.
+
+\section{Alternating cofactors and the exact threshold}\label{sec:threshold}
+
+Fix \(a\ge1\), put \(Q=p^a\), and let \(d=2s+1\ge3\) be odd.  Set
+\[
+  m=C_d(Q)=\frac{Q^d+1}{Q+1}.
+\]
+The alternating expansion is
+\[
+  m=Q^{2s}-Q^{2s-1}+\cdots-Q+1.
+\]
+
+\begin{lemma}[Positive block expansion]\label{lem:block}
+One has
+\[
+  m=1+(Q-1)\sum_{i=0}^{s-1}Q^{2i+1}.
+\]
+\end{lemma}
+
+\begin{proof}
+For each \(i\),
+\[
+  (Q-1)Q^{2i+1}=Q^{2i+2}-Q^{2i+1}.
+\]
+Summing these pairs and adding \(1\) gives the alternating expansion of
+\(m\).
+\end{proof}
+
+\begin{lemma}[Prime nondivisibility]\label{lem:coprime}
+One has \(m\equiv1\pmod p\).  In particular \(p\nmid m\).
+\end{lemma}
+
+\begin{proof}
+Since \(Q=p^a\equiv0\pmod p\), every nonconstant term of the alternating
+expansion vanishes modulo \(p\).
+\end{proof}
+
+\begin{proposition}[Exact threshold interval]\label{prop:threshold}
+For every odd \(d\ge3\),
+\[
+  p^{a(d-1)-1}<C_d(p^a)<p^{a(d-1)}.
+\]
+Consequently,
+\[
+  r_p(C_d(p^a))=a(d-1)=2as.
+\]
+\end{proposition}
+
+\begin{proof}
+By Lemma~\ref{lem:block},
+\[
+  m>(Q-1)Q^{d-2}.
+\]
+Since \(Q=p^a\) and
+\[
+  p^a-1\ge p^{a-1},
+\]
+we obtain
+\[
+  m>p^{a-1}p^{a(d-2)}
+   =p^{a(d-1)-1}.
+\]
+
+For the upper bound, use
+\[
+  (Q+1)m=Q^d+1.
+\]
+Because \(Q^{d-1}>1\),
+\[
+  Q^d+1<Q^d+Q^{d-1}=(Q+1)Q^{d-1},
+\]
+hence \(m<Q^{d-1}=p^{a(d-1)}\).
+
+Thus \(a(d-1)\) is the least positive exponent \(r\) with \(m<p^r\).
+\end{proof}
+
+\begin{remark}
+The strict lower bound in Proposition~\ref{prop:threshold} is one power of
+\(p\) below the upper threshold.  This exact interval is important: the
+opposite lower inequality \(p^{a(d-1)}<m\) is false.
+\end{remark}
+
+\section{The finite-window digit-sum identity}\label{sec:digits}
+
+The key structural fact is that multiplication by \(m=C_d(Q)\) adds a constant
+amount to the base-\(p\) digit sum throughout the complete interval
+\(1\le t\le Q\).
+
+\begin{lemma}[Block complement]\label{lem:complement}
+If \(0\le u<Q=p^a\), then
+\[
+  s_p((Q-1)-u)=a(p-1)-s_p(u).
+\]
+\end{lemma}
+
+\begin{proof}
+The number \(Q-1=p^a-1\) has \(a\) base-\(p\) digits, all equal to \(p-1\).
+Subtracting \(u<Q\) from \(Q-1\) is therefore digitwise complementation with no
+borrow.  Each digit \(u_i\) is replaced by \(p-1-u_i\).
+\end{proof}
+
+\begin{theorem}[Exact digit-sum shift]\label{thm:digit-shift}
+For every \(1\le t\le Q\),
+\[
+  s_p(mt)=s_p(t)+as(p-1).
+\]
+\end{theorem}
+
+\begin{proof}
+Assume first that \(1\le t<Q\).  Starting from
+Lemma~\ref{lem:block}, one may normalise \(mt\) in base \(Q\) as
+\begin{equation}\label{eq:baseQ}
+  mt
+  =
+  t
+  +\sum_{i=0}^{s-1}(Q-t)Q^{2i+1}
+  +\sum_{i=1}^{s}(t-1)Q^{2i}.
+\end{equation}
+Indeed,
+\[
+  (Q-t)Q^{2i+1}+(t-1)Q^{2i+2}
+  =
+  t(Q-1)Q^{2i+1}.
+\]
+All displayed base-\(Q\) digits lie in \(\{0,\ldots,Q-1\}\).  Since
+\(Q=p^a\), distinct base-\(Q\) positions occupy disjoint blocks of \(a\)
+base-\(p\) digits.  Hence
+\[
+  s_p(mt)
+  =
+  s_p(t)+s\bigl(s_p(Q-t)+s_p(t-1)\bigr).
+\]
+Now \(Q-t=(Q-1)-(t-1)\), so Lemma~\ref{lem:complement} gives
+\[
+  s_p(Q-t)+s_p(t-1)=a(p-1),
+\]
+and the result follows.
+
+For \(t=Q\), multiply Lemma~\ref{lem:block} by \(Q\):
+\[
+  Qm
+  =
+  Q+(Q-1)(Q^2+Q^4+\cdots+Q^{2s}).
+\]
+Its base-\(p\) digit sum is \(1+sa(p-1)\), while \(s_p(Q)=1\).
+\end{proof}
+
+The endpoint \(t=Q\) is included in the same identity, but the later binomial
+scaling theorem only uses triples \(j,q-j,q\) lying in \([1,Q]\); this is why
+the multiplier range terminates at \(q=Q\).
+
+\section{Coefficient scaling in the pre-endpoint window}\label{sec:scaling}
+
+\begin{theorem}[Finite-window coefficient scaling]\label{thm:scaling}
+Let \(2\le q\le Q\) and \(1\le j<q\).  Then
+\[
+  v_p\binom{mq}{mj}
+  =
+  as+v_p\binom qj.
+\]
+\end{theorem}
+
+\begin{proof}
+The integers \(j\), \(q-j\), and \(q\) all lie in \([1,Q]\).  Apply
+Theorem~\ref{thm:digit-shift} to all three and substitute into
+\eqref{eq:kummer-digit}:
+\[
+\begin{aligned}
+  v_p\binom{mq}{mj}
+  &=
+  \frac{s_p(mj)+s_p(m(q-j))-s_p(mq)}{p-1}\\
+  &=
+  \frac{
+    s_p(j)+as(p-1)
+    +s_p(q-j)+as(p-1)
+    -s_p(q)-as(p-1)}
+  {p-1}\\
+  &=
+  as+v_p\binom qj.
+\end{aligned}
+\]
+\end{proof}
+
+Taking \(j=1\) gives an exact selected-coefficient formula.
+
+\begin{corollary}[Selected coefficient]\label{cor:selected}
+For \(2\le q\le Q\),
+\[
+  v_p\binom{mq}{m}=as+v_p(q).
+\]
+Hence
+\[
+  \max_{2\le q\le Q}v_p\binom{mq}{m}
+  =
+  as+a
+  =
+  \frac{a(d+1)}2,
+\]
+and the maximum occurs uniquely at \(q=Q=p^a\).
+\end{corollary}
+
+\begin{proof}
+Since \(\binom q1=q\), the first formula is
+Theorem~\ref{thm:scaling} with \(j=1\).  For \(q\le p^a\),
+\(v_p(q)\le a\), with equality exactly when \(q=p^a\).
+\end{proof}
+
+\begin{remark}\label{rem:selected-not-gcd}
+A single selected coefficient need not control extremality of the restricted
+GCD.  In the cubic case \(d=3\), the maximum in
+Corollary~\ref{cor:selected} equals \(2a=r_p(m)\), even though for \(a\ge2\)
+no row with \(q\le Q\) is extremal.  The distinction is resolved by minimising
+over all selected coefficients.
+\end{remark}
+
+\section{The exact pre-extremal restricted-GCD formula}
+\label{sec:gcdwindow}
+
+For \(q\ge2\), write
+\[
+  \mu_p(q)=\min_{1\le j<q}v_p\binom qj.
+\]
+
+\begin{lemma}[Interior minimum]\label{lem:mu}
+For every \(q\ge2\),
+\[
+  \mu_p(q)=
+  \begin{cases}
+    1,&q=p^b\text{ for some }b\ge1,\\
+    0,&q\text{ is not a power of }p.
+  \end{cases}
+\]
+\end{lemma}
+
+\begin{proof}
+Suppose first that \(q=p^b\).  Every \(1\le j<q\) forces at least one borrow
+when \(j\) is subtracted from the base-\(p\) expansion \(10\cdots0\), so
+Kummer gives \(v_p\binom qj\ge1\).  Taking \(j=p^{b-1}\), the addition
+\[
+  p^{b-1}+(p-1)p^{b-1}=p^b
+\]
+has exactly one carry.  Thus the minimum is \(1\).
+
+Now suppose \(q\) is not a power of \(p\), and let \(b=v_p(q)\).  The base-\(p\)
+digit of \(q\) at position \(b\) is nonzero, and \(p^b<q\).  Taking
+\(j=p^b\), the subtraction \(q-j\) requires no borrow.  Hence
+\(v_p\binom q{p^b}=0\).
+\end{proof}
+
+\begin{theorem}[Exact pre-endpoint GCD valuation]\label{thm:gcd-window}
+For \(2\le q\le Q\),
+\[
+  v_p(G(mq;m))
+  =
+  as+
+  \begin{cases}
+    1,&q=p^b\text{ for some }1\le b\le a,\\
+    0,&\text{otherwise}.
+  \end{cases}
+\]
+\end{theorem}
+
+\begin{proof}
+By \eqref{eq:gcd-min} and Theorem~\ref{thm:scaling},
+\[
+\begin{aligned}
+  v_p(G(mq;m))
+  &=
+  \min_{1\le j<q}v_p\binom{mq}{mj}\\
+  &=
+  as+\min_{1\le j<q}v_p\binom qj\\
+  &=
+  as+\mu_p(q).
+\end{aligned}
+\]
+Apply Lemma~\ref{lem:mu}.  Since \(q\le Q=p^a\), the positive powers of \(p\)
+in the interval are exactly \(p,p^2,\ldots,p^a\).
+\end{proof}
+
+\begin{corollary}[Pre-endpoint maximum and argmax]\label{cor:gcd-max}
+For every odd \(d\ge3\),
+\[
+  \max_{2\le q\le Q}v_p(G(mq;m))
+  =
+  as+1
+  =
+  \frac{a(d-1)}2+1.
+\]
+The complete argmax set is
+\[
+  \{p,p^2,\ldots,p^a\}.
+\]
+\end{corollary}
+
+The power/non-power dichotomy in Lemma~\ref{lem:mu} is classical for the
+ordinary binomial row.  What is special here is that
+Theorem~\ref{thm:scaling} transports it, with the additive shift \(as\), to
+the cofactor-restricted rows.
+
+\section{The sparse endpoint}\label{sec:endpoint}
+
+The multiplier \(q=Q+1\) is outside the finite scaling window.  It is also
+arithmetically distinguished:
+\[
+  m(Q+1)=Q^d+1=p^{ad}+1.
+\]
+
+\begin{lemma}[A \(p^L+1\) valuation identity]\label{lem:plus-one}
+Let \(P=p^L\) with \(L\ge1\), and let \(1\le k<P\).  Then
+\[
+  v_p\binom{P+1}{k}
+  =
+  L-v_p(k)-v_p(P+1-k).
+\]
+\end{lemma}
+
+\begin{proof}
+The identity
+\[
+  k\binom Pk=P\binom{P-1}{k-1}
+\]
+and Kummer's theorem give
+\[
+  v_p\binom Pk=L-v_p(k),
+\]
+because \(P-1\) has all lower \(L\) base-\(p\) digits equal to \(p-1\), so
+\(\binom{P-1}{k-1}\) has valuation zero.  Next,
+\[
+  (P+1-k)\binom{P+1}{k}=(P+1)\binom Pk.
+\]
+Since \(p\nmid P+1\), taking \(p\)-adic valuations yields the formula.
+\end{proof}
+
+\begin{theorem}[Endpoint coefficients and endpoint GCD]
+\label{thm:endpoint}
+For \(1\le j\le Q\),
+\[
+  v_p\binom{m(Q+1)}{mj}
+  =
+  ad-v_p(j)-v_p(Q+1-j).
+\]
+Consequently,
+\[
+  v_p(G(m(Q+1);m))
+  =
+  ad-a
+  =
+  a(d-1)
+  =
+  r_p(m).
+\]
+\end{theorem}
+
+\begin{proof}
+Put \(P=Q^d=p^{ad}\).  By Proposition~\ref{prop:threshold},
+\[
+  1\le mj\le mQ<Q^d=P
+\]
+for \(1\le j\le Q\).  Lemma~\ref{lem:plus-one} applies with \(k=mj\).
+Since \(p\nmid m\),
+\[
+  v_p(mj)=v_p(j).
+\]
+Also
+\[
+  P+1-mj
+  =
+  m(Q+1)-mj
+  =
+  m(Q+1-j),
+\]
+hence
+\[
+  v_p(P+1-mj)=v_p(Q+1-j).
+\]
+This proves the coefficient formula.
+
+Now
+\[
+  j+(Q+1-j)=Q+1\equiv1\pmod p,
+\]
+so \(j\) and \(Q+1-j\) cannot both be divisible by \(p\).  Since each lies in
+\([1,Q]\),
+\[
+  v_p(j)+v_p(Q+1-j)\le a.
+\]
+Therefore every selected endpoint coefficient has valuation at least
+\(ad-a\).  Equality occurs at \(j=1\), for which \(Q+1-j=Q\), and also at
+\(j=Q\).  Taking the minimum over the selected coefficients gives
+\[
+  v_p(G(m(Q+1);m))=ad-a=a(d-1).
+\]
+The final equality with \(r_p(m)\) is Proposition~\ref{prop:threshold}.
+\end{proof}
+
+Thus the sparse row \(Q^d+1\) is always extremal.  The remaining question is
+whether it is the first extremal row.
+
+\section{Least extremal rows}\label{sec:least}
+
+\subsection{Odd degree \(d\ge5\)}
+
+\begin{theorem}[Least extremal row for alternating cofactors]
+\label{thm:mainA}
+Let \(p\) be prime, \(a\ge1\), and \(d\ge5\) odd.  Then
+\[
+  T_p(C_d(p^a))=p^{ad}+1.
+\]
+Equivalently, the least extremal multiplier is \(q=p^a+1\).
+\end{theorem}
+
+\begin{proof}
+Write \(d=2s+1\).  Since \(d\ge5\), we have \(s\ge2\).  By
+Proposition~\ref{prop:threshold},
+\[
+  r_p(m)=2as.
+\]
+For every \(2\le q\le Q\), Theorem~\ref{thm:gcd-window} gives
+\[
+  v_p(G(mq;m))\le as+1.
+\]
+Because \(a\ge1\) and \(s\ge2\),
+\[
+  as+1<2as.
+\]
+Hence no multiplier \(2\le q\le Q\) is extremal.  On the other hand,
+Theorem~\ref{thm:endpoint} shows that \(q=Q+1\) is extremal.  Therefore it is
+the least extremal multiplier, and
+\[
+  T_p(m)=m(Q+1)=Q^d+1=p^{ad}+1.
+\]
+\end{proof}
+
+\subsection{The cubic cofactor}
+
+When \(d=3\), one has \(s=1\) and
+\[
+  m=C_3(Q)=Q^2-Q+1=p^{2a}-p^a+1,
+  \qquad
+  r_p(m)=2a.
+\]
+The inequality used above becomes \(a+1<2a\), so the exponent-one case must be
+separated.
+
+\begin{theorem}[Complete cubic classification]\label{thm:mainC}
+For every prime \(p\) and every \(a\ge1\),
+\[
+  T_p(p^{2a}-p^a+1)
+  =
+  \begin{cases}
+    p(p^2-p+1),&a=1,\\
+    p^{3a}+1,&a\ge2.
+  \end{cases}
+\]
+\end{theorem}
+
+\begin{proof}
+Assume first that \(a=1\).  Then \(Q=p\), \(m=p^2-p+1\), and
+\(r_p(m)=2\).  Theorem~\ref{thm:gcd-window} gives
+\[
+  v_p(G(mq;m))
+  =
+  1+
+  \begin{cases}
+    1,&q\text{ is a positive power of }p,\\
+    0,&\text{otherwise}
+  \end{cases}
+  \qquad(2\le q\le p).
+\]
+The only positive power of \(p\) in this interval is \(q=p\).  Thus every
+\(2\le q<p\) has valuation \(1<2\), whereas
+\[
+  v_p(G(mp;m))=2=r_p(m).
+\]
+Hence the least extremal multiplier is \(p\), and
+\[
+  T_p(m)=mp=p(p^2-p+1).
+\]
+
+Now let \(a\ge2\).  For \(2\le q\le Q\), Theorem~\ref{thm:gcd-window} gives
+\[
+  v_p(G(mq;m))\le a+1<2a=r_p(m).
+\]
+Therefore no pre-endpoint multiplier is extremal.  The endpoint
+Theorem~\ref{thm:endpoint} gives equality at \(q=Q+1\), so
+\[
+  T_p(m)=m(Q+1)=Q^3+1=p^{3a}+1.
+\]
+\end{proof}
+
+\begin{remark}[Complementary-factor predecessor]\label{rem:complementary}
+For \(a\ge2\), the predecessor theorem \cite{FairfaxBallExtremes2026} states
+\[
+  T_p(p^a+1)=p^{3a}+1.
+\]
+Since
+\[
+  (p^a+1)(p^{2a}-p^a+1)=p^{3a}+1,
+\]
+Theorem~\ref{thm:mainC} shows that the same sparse row is least extremal for
+both complementary factors when \(a\ge2\).  The two least-row results are
+nevertheless logically distinct: the predecessor theorem does not imply the
+cofactor-side lower-row non-attainment proved here.
+\end{remark}
+
+\begin{remark}[The edge \(p=2,a=1\)]
+For \(p=2\) and \(a=1\), Theorem~\ref{thm:mainC} gives \(m=3\) and
+\(T_2(3)=6\).  The valuation \(v_2(G(6;3))=2\) is a known isolated instance,
+explicitly recorded by McTague \cite{McTague2017} and by the author's earlier
+minus-one work \cite{FairfaxBallMinusOne2026}.  The present theorem includes
+that case as part of the family classification; it is not presented as a new
+isolated observation.
+\end{remark}
+
+\section{Examples and structural features}\label{sec:examples}
+
+\begin{example}[A quintic cofactor]
+Take \(p=2\), \(a=1\), \(d=5\).  Then \(Q=2\),
+\[
+  m=C_5(2)=\frac{2^5+1}{2+1}=11,
+  \qquad
+  r_2(11)=4.
+\]
+The only pre-endpoint multiplier is \(q=2\), and
+Theorem~\ref{thm:gcd-window} gives
+\[
+  v_2(G(22;11))=as+1=1\cdot2+1=3.
+\]
+At \(q=3\),
+\[
+  m(Q+1)=33=2^5+1,
+\]
+and Theorem~\ref{thm:endpoint} gives valuation \(4\).  Hence
+\[
+  T_2(11)=33.
+\]
+\end{example}
+
+\begin{example}[Why the selected coefficient is insufficient]
+Take \(p=3\), \(a=2\), \(d=3\).  Then \(Q=9\),
+\[
+  m=9^2-9+1=73,
+  \qquad
+  r_3(73)=4.
+\]
+At the final pre-endpoint multiplier \(q=9\),
+Corollary~\ref{cor:selected} gives
+\[
+  v_3\binom{657}{73}=a+v_3(9)=4,
+\]
+already equal to the global threshold.  Nevertheless
+Theorem~\ref{thm:gcd-window} gives
+\[
+  v_3(G(657;73))=a+1=3,
+\]
+because another selected coefficient has smaller valuation.  The first
+extremal restricted GCD occurs at
+\[
+  q=10,\qquad N=730=3^6+1.
+\]
+\end{example}
+
+\begin{example}[The exponent-one cubic branch]
+Take \(p=3\), \(a=1\).  Then
+\[
+  m=3^2-3+1=7,\qquad r_3(7)=2.
+\]
+The multiplier \(q=3\) already gives
+\[
+  v_3(G(21;7))=2,
+\]
+so \(T_3(7)=21\).  The sparse endpoint \(q=Q+1=4\) gives the later extremal
+row \(28=3^3+1\), showing exactly why \(a=1\) must be separated from
+\(a\ge2\) in Theorem~\ref{thm:mainC}.
+\end{example}
+
+The proof also identifies the full pre-endpoint extremal pattern within the
+window: among \(2\le q\le Q\), the restricted-GCD valuation is higher by one
+exactly at powers of \(p\).  By contrast, the selected coefficient
+\(\binom{mq}{m}\) increases according to \(v_p(q)\) and has a unique maximum
+at \(q=Q\).  These two statistics agree on neither their maxima nor their
+argmax sets in general.
+
+\section{Relation to prior work}\label{sec:related}
+
+The fixed-multiple restricted-GCD family has a substantial prior literature,
+and the theorem package above should be read within that context.
+
+McTague studies
+\[
+  \gcd_{0<k<n/q}\binom n{qk},
+\]
+which becomes \(G(N;m)\) after renaming \(n=N\) and \(q=m\).  His theorem under
+\(p\equiv1\pmod m\), together with a corrected same-residue extension, is not
+applicable to the present family in general because the cofactor modulus is
+typically larger than the valuation prime.  His paper does contain the
+specific valuation \(v_2(G(6;3))=2\) \cite{McTague2017}.
+
+Wu uses exactly the notation-equivalent family
+\[
+  g(m,n)=\gcd\left\{\binom{mn}{mk}:1\le k<n\right\}.
+\]
+For a restriction modulus that is itself a power of the valuation prime, Wu
+obtains the familiar power/non-power dichotomy in \(n\) \cite{Wu2026}.  In the
+present cofactor family, however, \(p\nmid m\) by Lemma~\ref{lem:coprime}; the
+hypotheses are therefore different.  The ordinary-row minimum
+Lemma~\ref{lem:mu} has the same dichotomy, but
+Theorem~\ref{thm:scaling} is what transfers it to cofactor-restricted rows.
+
+Other papers select lower indices by different arithmetic conditions.  Hong
+uses a coprimality selector \cite{Hong2016}.  Chiu--Yuan--Zhou study
+non-coprime indices in a central band \cite{ChiuYuanZhou2023}, while
+Chung--Yang--Zhou use selectors of the form \(\gcd(N,k)=d\)
+\cite{ChungYangZhou2025}.  Guo--Qiu--Cao--Feng--Gao take a GCD across the row
+multiplier for a fixed lower index rather than a per-row GCD over lower-index
+multiples \cite{GuoEtAl2026}.  These are adjacent aggregation problems rather
+than notation-equivalent versions of the present least-row question.
+
+The author's preceding papers are also genuine prior work.  The minus-one
+paper includes a common-\(p^c\) scaling theorem
+\cite{FairfaxBallMinusOne2026}; it removes a common power of \(p\) from the row
+and restriction modulus and is different from the additive scaling in
+Theorem~\ref{thm:scaling}.  The extremal paper
+\cite{FairfaxBallExtremes2026} supplies Theorem~\ref{thm:prior-global}, the
+least-row framework, and the complementary theorem
+\(T_p(p^a+1)=p^{3a}+1\) for \(a\ge2\).
+
+A theorem-level literature audit was carried out against the final statements
+proved here, with a cutoff of 2 October 2026.  No mathematically equivalent
+or theorem-level source implying the family-level coefficient-scaling,
+pre-endpoint GCD, sparse-endpoint, or least-row statements was located in that
+documented search.  This negative-search result is not a claim of historical
+priority.  In particular, the recently published paper of Chung and Yang
+\cite{ChungYang2026} remained subscription-inaccessible at theorem level
+during the audit.  Its abstract concerns non-coprime indices, a different
+visible selector, but inaccessible internal results could not be ruled out as
+overlapping special cases.  That comparison therefore remains explicitly
+unresolved.
+
+\section{Formal verification}\label{sec:formal}
+
+The complete theorem package was formalised in Lean 4 before this manuscript
+was written.  The formal development uses Lean
+\texttt{v4.35.0-rc2} and a pinned Mathlib dependency through the author's
+Pascal Extremes formalisation.  The latter supplies prior infrastructure for
+\(G\), \(r_p\), extremal rows, and \(T_p\); the cofactor-specific threshold,
+digit arithmetic, scaling, exact GCD formula, endpoint theorem, and least-row
+results are proved in the present repository.
+
+The principal mathematical statements correspond to the following public Lean
+declarations:
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+Mathematical statement & Lean declaration\\
+\midrule
+Finite-window coefficient scaling &
+\texttt{PascalCofactors.coefficient\_scaling}\\
+Exact bounded GCD valuation &
+\texttt{PascalCofactors.restricted\_gcd\_valuation\_bounded}\\
+Odd \(d\ge5\) least-row theorem &
+\texttt{PascalCofactors.targetA\_d}\\
+Cubic classification &
+\texttt{PascalCofactors.targetC}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The formal sources contain no substantive \texttt{sorry} or \texttt{admit}.
+The advertised Palomar Challenge was independently checked by Comparator and
+the con-ron, NanoDa, and Lean kernels.  The package was registered as
+\href{https://palomar-registry.org/entry.html?id=PALOMAR-2026-10-02-000014&version=1}
+{\texttt{PALOMAR-2026-10-02-000014}, version 1},
+with registered source commit
+\texttt{02a52e71a0a5ab1e77824490d0c47650d4a45691}.
+
+Formal verification and registry preservation establish that the stated Lean
+theorems check under the recorded environment.  They do not establish
+historical novelty, literature completeness, or independent human peer review.
+
+\section{Concluding remarks}
+
+For alternating cofactors
+\[
+  C_d(p^a)=\frac{p^{ad}+1}{p^a+1},
+\]
+the base-\(p\) structure of the cofactor gives an unusually rigid finite
+window.  Multiplication by the cofactor shifts digit sums by the constant
+\(a(d-1)(p-1)/2\), and this converts directly into an additive scaling law for
+all selected binomial coefficients.  Minimising that identity produces the
+exact row-by-row restricted-GCD valuation up to \(q=p^a\).
+
+The next multiplier, \(q=p^a+1\), is governed by a different mechanism: the
+row collapses to the sparse number \(p^{ad}+1\).  Comparing the pre-endpoint
+maximum with the global threshold then identifies the least extremal row for
+all odd \(d\ge5\), while the cubic case exposes a single structural
+exceptional regime at exponent \(a=1\).
+
+The complementary cubic factors
+\[
+  p^a+1
+  \quad\text{and}\quad
+  p^{2a}-p^a+1
+\]
+therefore share the least extremal row \(p^{3a}+1\) when \(a\ge2\), but for
+different restriction moduli and with separate minimality arguments.  This
+cofactor viewpoint suggests that other sparse factorizations of
+\(p^L\pm1\) may support similarly rigid digit windows, though no general
+classification is asserted here.
+
+\paragraph{Acknowledgements.}
+The author thanks Carl McTague and Chai Wah Wu for prior work on restricted
+binomial GCDs, and Ernst Eduard Kummer for the classical valuation theorem on
+which the carry and digit-sum arguments rest.  The Lean formalisation uses
+Mathlib and builds on the author's Pascal Extremes formal infrastructure.
+ChatGPT (OpenAI, GPT-5.6 Sol) assisted with proof development, literature
+auditing, Lean formalisation, repository operations, and manuscript drafting
+under human direction and review.
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+\end{document}
