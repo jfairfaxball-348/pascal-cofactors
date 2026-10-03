@@ -1,0 +1,38 @@
+name: Paper
+
+on:
+  push:
+    branches:
+      - stage7-paper
+    paths:
+      - "paper/**"
+      - ".github/workflows/paper.yml"
+  pull_request:
+    paths:
+      - "paper/**"
+      - ".github/workflows/paper.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  latex:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install LaTeX
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y latexmk texlive-latex-extra texlive-fonts-recommended
+
+      - name: Build manuscript
+        working-directory: paper
+        run: latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
+
+      - name: Require clean bibliography and references
+        working-directory: paper
+        run: |
+          ! grep -E "LaTeX Warning: (Citation|Reference).*undefined|There were undefined references|There were undefined citations" main.log
